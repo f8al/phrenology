@@ -23,7 +23,15 @@ class Main:
         session = HeaderService(self.service_config)
         headers_model = session.run_request(url)
         if headers_model:
-            expected_headers = ["Content-Type", "Cache-Control", "X-Frame-Options", "Strict-Transport-Security", "Content-Security-Policy"]
+            expected_headers = ["X-Frame-Options", "X-Content-Type-Options", "Strict-Transport-Security",
+                                "Permissions-Policy", "X-Frame-Options", "Strict-Transport-Security",
+                                "Content-Security-Policy", "Cross-Origin-Embedder-Policy", "Cross-Origin-Resource-Policy",
+                                "Cross-Origin-Opener-Policy","Referrer-Policy"]
+            
+            deprecated_headers = ["X-XSS-Protection", "Expect-CT", "X-Permitted-Cross-Domain-Policies"]
+            
+            information_headers = ["X-Powered-By", "Server", "x-AspNet-Version", "X-AspNetMvc-Version"]
+            cache_headers = ["Cache-Control", "Pragma", "Last-Modified", "Expires", "ETag"]
             query_result = headers_model.query(expected_headers)
 
             self._output = self.count(query_result)
