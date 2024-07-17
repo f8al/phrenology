@@ -95,15 +95,15 @@ class Template(OutputAbstract):
         print(f"**          {name}: Analysis Example        **\n")
         print("\n\tDoes Exist:\n")
         for key, value in data["does_exist"].items():
-            print(f"\t{key}: {value}")
+            print(colorize(f"\t{key}: {value}", result[0]))
 
         print("\n\tDoes Not Exist:\n")
         for key, value in data["not_exist"].items():
-            print(f"\t{key}: {value}")
+            print(colorize(f"\t{key}: {value}", result[1]))
 
         print("\n\tMore Exist:\n")
         for key, value in data["more_exist"].items():
-            print(f"\t{key}: {value}")
+            print(colorize(f"\t{key}: {value}", "info"))
 
     def _render_read(self, name, result, data):
         """
