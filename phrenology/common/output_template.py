@@ -76,9 +76,8 @@ class Template(OutputAbstract):
         print(f"**          {name}: Counts Example        **\n")
         for key, value in data.items():
             if (key == "does_exist"):
-                print(result[0])
                 alert = result[0]
-            if (key == "not_exist"):
+            elif (key == "not_exist"):
                 alert = result[1]
             else:
                 alert = "info"
