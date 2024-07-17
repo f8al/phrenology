@@ -40,7 +40,7 @@ class Template(OutputAbstract):
     def __init__(self):
         self.name =''
 
-    def _render_banner(self, data=None):
+    def _render_banner(self, name=None, data=None):
         print('           __                          __                 ')
         print('    ____  / /_  ________  ____  ____  / /___  ____ ___  __')
         print('   / __ \\/ __ \\/ ___/ _ \\/ __ \\/ __ \\/ / __ \\/ __ `/ / / /')
@@ -50,7 +50,7 @@ class Template(OutputAbstract):
         print('      A simple tool for checking security HEADers         ')
         print('                   SecurityShrimp 2024                    ')
 
-    def render_output(self, output_type, data = None):
+    def render_output(self, output_type, name=None, data = None):
         """
         Renders the output based on its type.
 
@@ -61,11 +61,11 @@ class Template(OutputAbstract):
         method_name = f"_render_{output_type}"
         method = getattr(self, method_name, None)
         if callable(method):
-            method(data)
+            method(name, data)
         else:
             raise AttributeError(f"No render method found for type '{output_type}'")
 
-    def _render_counts(self, data):
+    def _render_counts(self, name, data):
         """
         Renders the counts output.
 
@@ -73,11 +73,11 @@ class Template(OutputAbstract):
             data (dict): The data to render.
         """
         print("************************************")
-        print("**        Counts Example        **\n")
+        print(f"**          {name}: Counts Example        **\n")
         for key, value in data.items():
             print(f"\t{key}: {value}")
 
-    def _render_list(self, data):
+    def _render_list(self, name, data):
         """
         Renders the list output.
 
@@ -85,7 +85,7 @@ class Template(OutputAbstract):
             data (dict): The data to render.
         """
         print("\n************************************")
-        print("**        Analysis Example        **\n")
+        print(f"**          {name}: Analysis Example        **\n")
         print("\n\tDoes Exist:\n")
         for key, value in data["does_exist"].items():
             print(f"\t{key}: {value}")
@@ -98,7 +98,7 @@ class Template(OutputAbstract):
         for key, value in data["more_exist"].items():
             print(f"\t{key}: {value}")
 
-    def _render_read(self, data):
+    def _render_read(self, name, data):
         """
         Renders the read output.
 
@@ -106,11 +106,11 @@ class Template(OutputAbstract):
             data (dict): The data to render.
         """
         print("\n************************************")
-        print("**          Read Example          **\n\n")
+        print(f"**          {name}: Read Example          **\n\n")
         for key, value in data.items():
             print(f"\t{key}: {value}")
 
-    def _render_error(self, data):
+    def _render_error(self, name, data):
         """
         Renders the error output.
 
@@ -118,5 +118,5 @@ class Template(OutputAbstract):
             data (dict): The data to render.
         """
         print("\n************************************")
-        print("**          Error Occurred        **\n\n")
+        print(f"**          {name}: Error Occurred        **\n\n")
         print(f"\t{data['message']}")
