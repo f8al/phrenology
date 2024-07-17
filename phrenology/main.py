@@ -2,13 +2,10 @@
 from .component.header import HeaderService
 
 class Main:
-    def __init__(self, output):
+    def __init__(self, output, config):
         # output here represents the output abstract class implemented in common.output.py
         self.output = output
-        self.service_config = {
-            "method": "GET",
-            "allow_redirects": False
-        }
+        self.service_config = config
 
     def engage(self, url):
         """
