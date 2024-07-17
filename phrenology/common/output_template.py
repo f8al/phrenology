@@ -21,16 +21,16 @@ class lightcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-def colorize(string, alert, options):
+def colorize(string, alert, colors=None):
     bcolors = darkcolors
-    if options.colors == "light":
+    if colors == "light":
         bcolors = lightcolors
-    elif options.colors == "none":
+    elif colors == "none":
         return string
     color = {
         'error':    bcolors.FAIL + string + bcolors.ENDC,
         'warning':  bcolors.WARNING + string + bcolors.ENDC,
-        'ok':       bcolors.OKGREEN + string + bcolors.ENDC,
+        'success':       bcolors.OKGREEN + string + bcolors.ENDC,
         'info':     bcolors.OKBLUE + string + bcolors.ENDC,
         'deprecated': string # No color for deprecated headers or not-an-issue ones
     }
@@ -40,7 +40,7 @@ class Template(OutputAbstract):
     def __init__(self):
         self.name =''
 
-    def _render_banner(self, name=None, data=None):
+    def _render_banner(self, name=None, result=None, data=None):
         print('           __                          __                 ')
         print('    ____  / /_  ________  ____  ____  / /___  ____ ___  __')
         print('   / __ \\/ __ \\/ ___/ _ \\/ __ \\/ __ \\/ / __ \\/ __ `/ / / /')
@@ -50,7 +50,7 @@ class Template(OutputAbstract):
         print('      A simple tool for checking security HEADers         ')
         print('                   SecurityShrimp 2024                    ')
 
-    def render_output(self, output_type, name=None, data = None):
+    def render_output(self, output_type, name=None,result=None, data = None):
         """
         Renders the output based on its type.
 
@@ -61,11 +61,11 @@ class Template(OutputAbstract):
         method_name = f"_render_{output_type}"
         method = getattr(self, method_name, None)
         if callable(method):
-            method(name, data)
+            method(name, result, data)
         else:
             raise AttributeError(f"No render method found for type '{output_type}'")
 
-    def _render_counts(self, name, data):
+    def _render_counts(self, name, result, data):
         """
         Renders the counts output.
 
@@ -75,9 +75,17 @@ class Template(OutputAbstract):
         print("************************************")
         print(f"**          {name}: Counts Example        **\n")
         for key, value in data.items():
-            print(f"\t{key}: {value}")
-
-    def _render_list(self, name, data):
+            if (key == "does_exist"):
+                print(result[0])
+                alert = result[0]
+            if (key == "not_exist"):
+                alert = result[1]
+            else:
+                alert = "info"
+            
+            print(colorize(f"\t{key}: {value}",alert))
+           
+    def _render_list(self, name, result, data):
         """
         Renders the list output.
 
@@ -98,7 +106,7 @@ class Template(OutputAbstract):
         for key, value in data["more_exist"].items():
             print(f"\t{key}: {value}")
 
-    def _render_read(self, name, data):
+    def _render_read(self, name, result, data):
         """
         Renders the read output.
 
@@ -110,7 +118,7 @@ class Template(OutputAbstract):
         for key, value in data.items():
             print(f"\t{key}: {value}")
 
-    def _render_error(self, name, data):
+    def _render_error(self, name, result, data):
         """
         Renders the error output.
 
