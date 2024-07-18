@@ -7,7 +7,7 @@ class Main:
         self.output = output
         self.service_config = config
 
-    def engage(self, url):
+    def engage(self, url, cookie, cache, deprecated, information, get, json):
         """
         Engages the header checking process and maps output to objects.
 
@@ -29,9 +29,12 @@ class Main:
             cache_headers = {"result":["info","info"],"items":["Cache-Control", "Pragma", "Last-Modified", "Expires", "ETag"]}
           
             self.run('Expected headers',expected_headers, headers_model)
-            #self.run('Deprecated headers', deprecated_headers, headers_model)
-            #self.run('Informational headers', information_headers, headers_model)
-            #self.run('Cacheing headers', cache_headers, headers_model)
+            if(deprecated):
+                self.run('Deprecated headers', deprecated_headers, headers_model)
+            if(information):
+                self.run('Informational headers', information_headers, headers_model)
+            if(cache):
+                self.run('Cacheing headers', cache_headers, headers_model)
         else:
             self._output = {
                 "type": "error",
