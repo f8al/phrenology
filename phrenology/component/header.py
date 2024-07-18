@@ -106,6 +106,7 @@ class HeaderService:
         Raises:
             ValueError: If 'method' is not included in the configuration.
         """
+        self.session = requests.Session()
         self._method = ""
         self._url =""
         self._config = {}
@@ -116,7 +117,6 @@ class HeaderService:
                 raise ValueError("Configuration must include 'method'.")
         except Exception as e:
             raise ValueError(f"Invalid configuration: {e}")
-        self.session = requests.Session()
 
     @property
     def config(self):
