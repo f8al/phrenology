@@ -1,4 +1,5 @@
 import requests
+import re
 from requests.exceptions import HTTPError, Timeout, RequestException
 
 
@@ -393,13 +394,18 @@ class HeaderService:
     @property
     def url(self):
         return self._url
-    
+
     @url.setter
     def url(self, value):
-        try:
-            self._url = value
-        except Exception as e:
-            raise ValueError(f"Invalid configuration: {e}")
+        url_regex = r"^[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#\[\]@!$&'()*+,;=.]+$"
+        if not re.match(url_regex, value):
+            # Check if it starts with http or https
+            if not value.startswith(('http://', 'https://')):
+                value = f"https://{value}"
+            # Re-check with updated value
+            if not re.match(url_regex, value):
+                raise ValueError("Invalid URL format")
+        self._url = value
         
     
     def _handle_response(self, response):

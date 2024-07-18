@@ -48,7 +48,7 @@ class Template(OutputAbstract):
         print(' / .___/_/ /_/_/   \\___/_/ /_/\\____/_/\\____/\\__, /\\__, /  ')
         print('/_/                                        /____//____/   ')
         print('      A simple tool for checking security HEADers         ')
-        print('                   SecurityShrimp 2024                    ')
+        print('           SecurityShrimp/DataMinion 2024                 ')
 
     def render_output(self, output_type, name=None,result=None, data = None):
         """
