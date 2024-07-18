@@ -75,9 +75,9 @@ class Template(OutputAbstract):
         print("************************************")
         print(f"**          {name}: Counts Example        **\n")
         for key, value in data.items():
-            if (key == "does_exist"):
+            if (key == "expected"):
                 alert = result[0]
-            elif (key == "not_exist"):
+            elif (key == "missing"):
                 alert = result[1]
             else:
                 alert = "info"
@@ -93,16 +93,16 @@ class Template(OutputAbstract):
         """
         print("\n************************************")
         print(f"**          {name}: Analysis Example        **\n")
-        print("\n\tDoes Exist:\n")
-        for key, value in data["does_exist"].items():
+        print("\n\tExpected:\n")
+        for key, value in data["expected"].items():
             print(colorize(f"\t{key}: {value}", result[0]))
 
-        print("\n\tDoes Not Exist:\n")
-        for key, value in data["not_exist"].items():
+        print("\n\tMissing:\n")
+        for key, value in data["missing"].items():
             print(colorize(f"\t{key}: {value}", result[1]))
 
-        print("\n\tMore Exist:\n")
-        for key, value in data["more_exist"].items():
+        print("\n\tPresent:\n")
+        for key, value in data["present"].items():
             print(colorize(f"\t{key}: {value}", "info"))
 
     def _render_read(self, name, result, data):

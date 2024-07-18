@@ -14,9 +14,9 @@ class HeaderModel:
 
     Attributes:
         _headers (dict): The dictionary of headers.
-        does_exist (dict): Headers that are expected and exist.
-        not_exist (dict): Headers that are expected but do not exist.
-        more_exist (dict): Headers that are not expected but exist.
+        expected (dict): Headers that are expected and exist.
+        missing (dict): Headers that are expected but do not exist.
+        present (dict): Headers that are not expected but exist.
     """
 
     def __init__(self, headers_dict):
@@ -27,9 +27,9 @@ class HeaderModel:
             headers_dict (dict): The dictionary of HTTP headers.
         """
         self._headers = headers_dict
-        self.does_exist = {}
-        self.not_exist = {}
-        self.more_exist = {}
+        self.expected = {}
+        self.missing = {}
+        self.present = {}
 
     def read(self, item):
         """
@@ -54,25 +54,25 @@ class HeaderModel:
             dict: A dictionary containing the counts of existing, non-existing,
                   and additional headers.
         """
-        self.does_exist = {}
-        self.not_exist = {}
-        self.more_exist = {}
+        self.expected = {}
+        self.missing = {}
+        self.present = {}
 
         for key in expected:
             if key in self._headers:
-                self.does_exist[key] = self._headers[key]
+                self.expected[key] = self._headers[key]
             else:
-                self.not_exist[key] = None
+                self.missing[key] = None
 
         for key in self._headers:
             if key not in expected:
-                self.more_exist[key] = self._headers[key]
+                self.present[key] = self._headers[key]
 
         counts = {
             "counts": {
-                "does_exist": len(self.does_exist),
-                "not_exist": len(self.not_exist),
-                "more_exist": len(self.more_exist)
+                "expected": len(self.expected),
+                "missing": len(self.missing),
+                "present": len(self.present)
             }
         }
 

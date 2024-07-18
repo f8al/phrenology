@@ -43,9 +43,9 @@ class Main:
 
         self.output.render_output('counts', name, headers["result"], query_result["counts"])
         self.output.render_output('list', name, headers["result"], {
-            "does_exist": headers_model.does_exist,
-            "not_exist": headers_model.not_exist,
-            "more_exist": headers_model.more_exist
+            "expected": headers_model.expected,
+            "missing": headers_model.missing,
+            "present": headers_model.present
         })
         self.output.render_output('read', name, headers["result"], {
             'Content-Type': headers_model.read('Content-Type')
