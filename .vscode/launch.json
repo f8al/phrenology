@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/venv/bin/python"
+        },
+        {
+            "name": "Python: Run phrenology.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/phrenology.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/venv/lib/python3.12/site-packages"
+            },
+            "python": "${workspaceFolder}/venv/bin/python",
+            "args": [
+                "--input",
+                "input_file.txt",
+                "--output",
+                "output_file.txt"
+            ]
+        }
+    ]
+}
