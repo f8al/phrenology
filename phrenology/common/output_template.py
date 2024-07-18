@@ -36,6 +36,12 @@ def colorize(string, alert, colors=None):
     }
     return color[alert] if alert in color else string
 
+def colorize_exclamation_and_key(key, alert):
+  exclamation_point = colorize("!", "error")  # Adjust color as needed
+  colored_key = colorize(key, alert)
+  return f"[!] Missing security header: {exclamation_point} {colored_key}"
+
+
 class Template(OutputAbstract):
     def __init__(self):
         self.name =''
@@ -49,6 +55,7 @@ class Template(OutputAbstract):
         print('/_/                                        /____//____/   ')
         print('      A simple tool for checking security HEADers         ')
         print('           SecurityShrimp/DataMinion 2024                 ')
+        print('\n\n')
 
     def render_output(self, output_type, name=None,result=None, data = None):
         """
@@ -72,8 +79,8 @@ class Template(OutputAbstract):
         Args:
             data (dict): The data to render.
         """
-        print("************************************")
-        print(f"**          {name}: Counts Example        **\n")
+        #print("************************************")
+        #print(f"**          {name}: Counts Example        **\n")
         for key, value in data.items():
             if (key == "expected"):
                 alert = result[0]
@@ -82,7 +89,7 @@ class Template(OutputAbstract):
             else:
                 alert = "info"
             
-            print(colorize(f"\t{key}: {value}",alert))
+            #print(colorize(f"\t{key}: {value}",alert))
            
     def _render_list(self, name, result, data):
         """
@@ -91,19 +98,18 @@ class Template(OutputAbstract):
         Args:
             data (dict): The data to render.
         """
-        print("\n************************************")
-        print(f"**          {name}: Analysis Example        **\n")
-        print("\n\tExpected:\n")
-        for key, value in data["expected"].items():
-            print(colorize(f"\t{key}: {value}", result[0]))
+        
+        domain = data['present']['Location']
+        colorbang = colorize("!", "error")
+        colorsplat = colorize("*", "info")
 
-        print("\n\tMissing:\n")
-        for key, value in data["missing"].items():
-            print(colorize(f"\t{key}: {value}", result[1]))
-
-        print("\n\tPresent:\n")
+        print(f"[*] Analyzing {colorize(name, 'info')} of {colorize(domain, 'info')}")
+        #for key, value in data["expected"].items():
+        #    print(f'[{colorsplat}] Security headers expected for analysis: {key}')
         for key, value in data["present"].items():
-            print(colorize(f"\t{key}: {value}", "info"))
+            print(f"[{colorsplat}] Header {colorize(key, 'success')} is present! (Value: {colorize(value, 'info')})")
+        for key, value in data["missing"].items():
+            print(f"[{colorbang}] Missing security header: {colorize(key, 'error')}")
 
     def _render_read(self, name, result, data):
         """

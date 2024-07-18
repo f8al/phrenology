@@ -29,9 +29,9 @@ class Main:
             cache_headers = {"result":["info","info"],"items":["Cache-Control", "Pragma", "Last-Modified", "Expires", "ETag"]}
           
             self.run('Expected headers',expected_headers, headers_model)
-            self.run('Deprecated headers', deprecated_headers, headers_model)
-            self.run('Informational headers', information_headers, headers_model)
-            self.run('Cacheing headers', cache_headers, headers_model)
+            #self.run('Deprecated headers', deprecated_headers, headers_model)
+            #self.run('Informational headers', information_headers, headers_model)
+            #self.run('Cacheing headers', cache_headers, headers_model)
         else:
             self._output = {
                 "type": "error",
@@ -48,6 +48,6 @@ class Main:
             "missing": headers_model.missing,
             "present": headers_model.present
         })
-        self.output.render_output('read', name, headers["result"], {
-            'Content-Type': headers_model.read('Content-Type')
-        })
+        #self.output.render_output('read', name, headers["result"], {
+        #    'Content-Type': headers_model.read('Content-Type')
+        #})
