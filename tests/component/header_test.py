@@ -19,7 +19,7 @@ class BaseTestHeaderService(unittest.TestCase):
             'cert': '/path/to/certfile'
         }
         self.service = HeaderService(config=self.config)
-        self.service.url = 'http://example.com'
+        # self.service.url = 'http://example.com'
 
 
 class TestMethodProperty(BaseTestHeaderService):
