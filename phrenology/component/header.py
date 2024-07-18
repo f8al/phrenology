@@ -1,5 +1,6 @@
 import requests
 import re
+from urllib.parse import urlparse, urlunparse
 from requests.exceptions import HTTPError, Timeout, RequestException
 
 
@@ -76,7 +77,6 @@ class HeaderModel:
                 "present": len(self.present)
             }
         }
-
         return counts
 
 class HeaderService:
@@ -395,18 +395,145 @@ class HeaderService:
     def url(self):
         return self._url
 
+    # @url.setter
+    # def url(self, value):
+    #     """
+    #     Sets the URL after performing various validations to ensure it is correctly formatted.
+
+    #     This setter performs the following steps:
+    #     1. Checks for invalid protocols (ftp, mailto, file) and raises an error if found.
+    #     2. Ensures the URL starts with 'http://' or 'https://'. If not, 'https://' is prepended.
+    #     3. Parses the URL into scheme, netloc (FQDN), path, and query components.
+    #     4. Validates the FQDN to ensure it contains at least one dot, does not start or end with a dot, 
+    #        and does not contain consecutive dots ('..').
+    #     5. Performs additional validation for IP addresses to ensure they have exactly four octets.
+    #     6. Ensures the URL does not contain any spaces.
+    #     7. Reconstructs the URL and assigns it to the internal `_url` attribute.
+
+    #     Args:
+    #         value (str): The URL to be set.
+
+    #     Raises:
+    #         ValueError: If the URL is invalid or contains unsupported protocols.
+    #     """
+    #     # Check for invalid protocols
+    #     invalid_protocols = ['ftp://', 'mailto:', 'file://']
+    #     for protocol in invalid_protocols:
+    #         if value.startswith(protocol):
+    #             raise ValueError(f"Invalid URL input: {protocol.strip(':')} protocol does not return headers.")
+
+    #     # Parse the URL components
+    #     parsed_url = urlparse(value)
+    #     scheme = parsed_url.scheme
+    #     netloc = parsed_url.netloc
+    #     path = parsed_url.path
+    #     query = parsed_url.query
+
+    #     # Ensure the URL starts with http or https
+    #     if scheme not in ('http', 'https'):
+    #         value = f"https://{value}"
+    #         parsed_url = urlparse(value)
+    #         scheme = parsed_url.scheme
+    #         netloc = parsed_url.netloc
+    #         path = parsed_url.path
+    #         query = parsed_url.query
+
+    #     # Validate the FQDN
+    #     if not netloc or '.' not in netloc or '..' in netloc or netloc.startswith('.') or netloc.endswith('.'):
+    #         raise ValueError("Invalid URL input: your url is malformed please check it and try again.")
+
+    #     # Validate the IP address
+    #     if all(char.isdigit() or char == '.' for char in netloc):
+    #         octets = netloc.split('.')
+    #         if len(octets) != 4:
+    #             raise ValueError("Invalid URL input: dude seriously?")
+    #         for octet in octets:
+    #             if not (0 <= int(octet) <= 255):
+    #                 raise ValueError("Invalid URL input: dude seriously?")
+
+    #     # Final check for invalid characters
+    #     if ' ' in value:
+    #         raise ValueError("Invalid URL format")
+
+    #     # Rebuild the URL
+    #     final_url = urlunparse((scheme, netloc, path, '', query, ''))
+    #     self._url = final_url
+
     @url.setter
     def url(self, value):
-        url_regex = r"^[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#\[\]@!$&'()*+,;=.]+$"
-        if not re.match(url_regex, value):
-            # Check if it starts with http or https
-            if not value.startswith(('http://', 'https://')):
-                value = f"https://{value}"
-            # Re-check with updated value
-            if not re.match(url_regex, value):
-                raise ValueError("Invalid URL format")
-        self._url = value
-        
+        """
+        Sets the URL after performing various validations to ensure it is correctly formatted.
+
+        This setter performs the following steps:
+        1. Checks for invalid protocols (ftp, mailto, file) and raises an error if found.
+        2. Ensures the URL starts with 'http://' or 'https://'. If not, 'https://' is prepended.
+        3. Parses the URL into scheme, netloc (FQDN), path, and query components.
+        4. Validates the FQDN to ensure it contains at least one dot, does not start or end with a dot, 
+           and does not contain consecutive dots ('..').
+        5. Performs additional validation for IP addresses to ensure they have exactly four octets.
+        6. Ensures the URL does not contain any spaces.
+        7. Reconstructs the URL and assigns it to the internal `_url` attribute.
+
+        The decision to avoid using outside libraries such as `urllib` is to demonstrate how URL parsing 
+        and validation can be handled manually. This approach provides more control over the parsing 
+        process and allows for custom validation logic. However, it is important to note that using 
+        standard libraries like `urllib` can simplify the code and provide robust handling of edge cases 
+        in real-world applications.
+
+        Args:
+            value (str): The URL to be set.
+
+        Raises:
+            ValueError: If the URL is invalid or contains unsupported protocols.
+        """
+        # Check for invalid protocols
+        invalid_protocols = ['ftp://', 'mailto:', 'file://']
+        for protocol in invalid_protocols:
+            if value.startswith(protocol):
+                raise ValueError(f"Invalid URL input: {protocol.strip(':')} protocol does not return headers.")
+        # Ensure the URL starts with http or https
+        if not value.startswith(('http://', 'https://')):
+            value = f"https://{value}"
+        # Extract the scheme and the rest of the URL
+        if '://' in value:
+            scheme, rest = value.split('://', 1)
+        else:
+            scheme, rest = 'https', value
+        # Check for presence of '/' or '?'
+        if '/' in rest:
+            netloc, path_query = rest.split('/', 1)
+            path_query = '/' + path_query
+        elif '?' in rest:
+            netloc, path_query = rest.split('?', 1)
+            path_query = '?' + path_query
+        else:
+            netloc, path_query = rest, ''
+        # Further split path and query
+        if '?' in path_query:
+            path, query = path_query.split('?', 1)
+        else:
+            path, query = path_query, ''
+        # Validate the netloc
+        if not netloc or '.' not in netloc or '..' in netloc or netloc.startswith('.') or netloc.endswith('.'):
+            raise ValueError("Invalid URL input: your url is malformed please check it and try again.")
+        # Validate the IP address
+        if all(char.isdigit() or char == '.' for char in netloc):
+            octets = netloc.split('.')
+            if len(octets) != 4:
+                raise ValueError("Invalid URL input: dude seriously?")
+            for octet in octets:
+                if not (0 <= int(octet) <= 255):
+                    raise ValueError("Invalid URL input: dude seriously?")
+        # Final check for invalid characters
+        if ' ' in value:
+            raise ValueError("Invalid URL format")
+        # Rebuild the URL
+        final_url = f"{scheme}://{netloc}"
+        if path:
+            final_url += path
+        if query:
+            final_url += f"?{query}"
+        self._url = final_url
     
     def _handle_response(self, response):
         """
