@@ -106,6 +106,7 @@ class HeaderService:
             ValueError: If 'method' is not included in the configuration.
         """
         self._method = ""
+        self._url =""
         self._config = {}
         try:
             if config:
@@ -389,6 +390,18 @@ class HeaderService:
         """
         self._config['cert'] = value
 
+    @property
+    def url(self):
+        return self._url
+    
+    @url.setter
+    def url(self, value):
+        try:
+            self._url = value
+        except Exception as e:
+            raise ValueError(f"Invalid configuration: {e}")
+        
+    
     def _handle_response(self, response):
         """
         Handles the HTTP response, raising errors for bad responses.
@@ -421,7 +434,7 @@ class HeaderService:
         headers_dict = dict(response.headers)
         return HeaderModel(headers_dict)
 
-    def run_request(self, url):
+    def run_request(self):
         """
         Executes the HTTP request and processes the response headers.
 
@@ -436,7 +449,7 @@ class HeaderService:
         """
         config = self.config
         try:
-            response = self.session.request(self.method, url, **config)
+            response = self.session.request(self.method, self.url, **config)
             self._handle_response(response)
             response_headers = self._handle_headers(response)
             return response_headers
