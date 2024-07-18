@@ -15,7 +15,8 @@ class Main:
             url (str): The URL to check headers.
         """
         session = HeaderService(self.service_config)
-        headers_model = session.run_request(url)
+        session.url = url
+        headers_model = session.run_request()
         if headers_model:
             expected_headers = {"result":["success","error"],"items":["X-Frame-Options", "X-Content-Type-Options", "Strict-Transport-Security",
                                 "Permissions-Policy", "X-Frame-Options", "Strict-Transport-Security",
