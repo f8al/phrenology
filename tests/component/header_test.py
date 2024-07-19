@@ -1,5 +1,5 @@
 import unittest
-from phrenology.component.header import HeaderService
+from phrenology.component import Header
 
 class BaseTestHeaderService(unittest.TestCase):
 
@@ -18,7 +18,7 @@ class BaseTestHeaderService(unittest.TestCase):
             'verify': True,
             'cert': '/path/to/certfile'
         }
-        self.service = HeaderService(config=self.config)
+        self.service = Header.Service(config=self.config)
         # self.service.url = 'http://example.com'
 
 
