@@ -18,7 +18,19 @@ python3 phrenology.py https://google.com
 
 ## Usage
 ```
-Usage: python3 phrenology.py domain
+Usage: python3 phrenology.py -u fqdn
+
+Optional Arguments:
+  -h, --help            show this help message and exit
+  -u URL, --url URL     URL to check headers
+  -C COOKIE, --cookie COOKIE
+                        Custom cookie to send
+  -c, --cache           Show cache headers
+  -d, --deprecated      Show informational headers
+  -f FILE, --file FILE  path to file containing a list of domains
+  -i, --information     Show informational headers headers
+  -g, --get             Use GET request method instead of HEAD
+  -j, --json            Output results as a json object
 ```
 
 ## Why was this made
