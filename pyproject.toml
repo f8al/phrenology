@@ -7,7 +7,7 @@ description = "Phrenology is a lightweight extendable and scalable tool for insp
 # Add any relevant project URLs (homepage, documentation, etc.)
 Homepage = "https://github.com/f8al/phrenology"
 
-[project.license]
+#[project.license]
 # Specify the license under which your project is distributed (e.g., MIT)
 # license = "MIT"
 
