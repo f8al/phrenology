@@ -110,4 +110,4 @@ __all__ = ['output']
 
 #**************************************************************
 # Clean up the module namespace
-del _Namespace, Output, OutputTemplate
+del _Namespace, OutputAbstract, Template
