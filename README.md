@@ -35,10 +35,6 @@ Optional Arguments:
 ## Screenshots
 ![](https://github.com/f8al/media/blob/main/phrenology.png?raw=true)
 
-
-# Contribution credit
-This tool has been developed with extensive guidance and direction from [@DataMinion](https://github.com/DataMinion)
-
 # About the name
 If you're one of the people looking at this tool going "OMG PHRENOLOGY IS RACIST!!1one!" then please read on below.
 
@@ -51,5 +47,8 @@ In choosing this name for our web security tool, we aim to draw a parallel to th
 ## Our Purpose:
 "Phrenology" is a tool designed to rigorously check the security headers of websites, ensuring they are robust against common vulnerabilities. It serves as a reminder that while we may laugh at the absurdity of past pseudo-sciences, the real absurdity lies in the modern-day neglect of essential security practices.
 
-# A Call to Action:
+## A Call to Action:
 Let’s take web security seriously. Just as the scientific community moved beyond phrenology to better understand the human mind, we must move beyond superficial security measures to protect our digital assets. Our tool aims to make it easier for engineers to uphold high security standards, ensuring a safer web for everyone.
+
+# Contribution credit
+This tool has been developed with extensive guidance and direction from [@DataMinion](https://github.com/DataMinion)
