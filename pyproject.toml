@@ -1,6 +1,6 @@
 [project]
 name = "phrenology" 
-version = "0.1.0"  
+version = "0.1.1"  
 description = "Phrenology is a lightweight extendable and scalable tool for inspecting security headers in responses from webservers.  This project is striving to use as few non-standard installed python libraries as possible while maintaining as much functionality as possible."  
 
 [project.urls]

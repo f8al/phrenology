@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 # Replace with your project information
 project_name = "phrenology"
-version = "0.1.0"
+version = "0.1.1"
 description = "A tool for analyzing your security HEADers"
 author = "SecurityShrimp"
 author_email = "securityshrimp@proton.me"
