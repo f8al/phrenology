@@ -153,6 +153,7 @@ class HeaderService:
         """
         return self._method
 
+    
     @method.setter
     def method(self, value):
         """
@@ -161,10 +162,23 @@ class HeaderService:
         Args:
             value (str): The HTTP method.
 
-        Example:
-            >>> service.method = "GET"
+        Raises:
+            ValueError: If the method is invalid or unsupported.
         """
-        self._method = value
+
+        valid_methods = ['GET', 'HEAD', 'OPTIONS', 'get', 'head', 'options']
+        unsupported_methods = ['POST', 'PUT', 'DELETE', 'PATCH', 'TRACE', 'CONNECT']
+
+        if isinstance(value, str):
+            value = value.upper()
+            if value in valid_methods:
+                self._method = value
+            elif value in unsupported_methods:
+                raise ValueError("Invalid method input: your method is not currently supported please use GET HEAD or OPTIONS")
+            else:
+                raise ValueError("Invalid method input: your method is invalid please use GET HEAD or OPTIONS")
+        else:
+            raise TypeError("Method must be a string")
 
     @property
     def proxy(self):

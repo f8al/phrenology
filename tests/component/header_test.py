@@ -33,7 +33,7 @@ class TestMethodProperty(BaseTestHeaderService):
         for method in valid_methods:
             with self.subTest(method=method):
                 self.service.method = method
-                self.assertEqual(self.service.method, method)
+                self.assertEqual(self.service.method, method.upper())
 
     def test_when_I_set_the_method_to_a_valid_but_unsupported_HTTP_method(self):
         """
@@ -57,7 +57,7 @@ class TestMethodProperty(BaseTestHeaderService):
             with self.subTest(method=method):
                 with self.assertRaises(ValueError) as context:
                     self.service.method = method
-                self.assertEqual(str(context.exception), "Invalid method input: your method invalid please use GET HEAD or OPTIONS")
+                self.assertEqual(str(context.exception), "Invalid method input: your method is invalid please use GET HEAD or OPTIONS")
 
 
 class TestProxyProperty(BaseTestHeaderService):
