@@ -25,7 +25,7 @@
 
 # Importing classes to include in the Output namespace
 from .output import OutputAbstract
-from .output_template import OutputTemplate
+from .output_template import Template
 
 
 """
@@ -43,7 +43,7 @@ class _Namespace:
 
 output = _Namespace()
 output.Abstract = OutputAbstract
-output.Template = OutputTemplate
+output.Template = Template
 
 """
 **************************************************************
