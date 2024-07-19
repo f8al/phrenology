@@ -73,4 +73,5 @@ venv.bak/
 .DS_Store
 shc*
 *.py.bak
+*.list
 
