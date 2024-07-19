@@ -24,7 +24,7 @@
 """
 
 # Importing classes to include in the Output namespace
-from .output import Output
+from .output import OutputAbstract
 from .output_template import OutputTemplate
 
 
@@ -42,7 +42,7 @@ class _Namespace:
     pass
 
 output = _Namespace()
-output.Output = Output
+output.Abstract = OutputAbstract
 output.Template = OutputTemplate
 
 """
