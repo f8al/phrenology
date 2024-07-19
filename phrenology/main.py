@@ -56,6 +56,20 @@ class Main:
             }
 
     def run(self, name, headers, headers_model):
+        """
+        Processes and outputs header data based on the provided name, headers configuration, and headers model.
+
+        This method is likely called internally by engage() for each type of header (expected, deprecated, etc.).
+
+        Args:
+            name (str): The name of the header category (e.g., "Expected Headers").
+            headers (dict): A dictionary containing configuration for the header category (e.g., result type, expected items).
+            headers_model (object): An instance of the HeaderService model containing retrieved headers data.
+
+        # Logic for processing and rendering header types block remains unchanged
+        """
+
+
         query_result = headers_model.query(headers["items"])
         # render header types block
 
