@@ -2,6 +2,14 @@
 from .component.header import HeaderService
 
 class Main:
+    """
+    The main class responsible for initiating the header checking process and presenting the results.
+
+    Attributes:
+        output (object): An instance of an output class used for rendering the results (likely from common.output.py)
+        service_config (dict): A dictionary containing configuration options for the header checking service.
+    """
+
     def __init__(self, output, config):
         # output here represents the output abstract class implemented in common.output.py
         self.output = output
@@ -9,10 +17,16 @@ class Main:
 
     def engage(self, url, cookie, cache, deprecated, information, get, json):
         """
-        Engages the header checking process and maps output to objects.
+        Initiates the process of checking headers for a provided URL and generates output based on user preferences.
 
         Args:
-            url (str): The URL to check headers.
+            url (str): The URL to check headers for.
+            cookie (str, optional): A custom cookie to include in the request. Defaults to None.
+            cache (bool, optional): Flag indicating whether to display cache headers in the output. Defaults to False.
+            deprecated (bool, optional): Flag indicating whether to display deprecated headers in the output. Defaults to False.
+            information (bool, optional): Flag indicating whether to display informational headers in the output. Defaults to False.
+            get (bool, optional): Flag indicating whether to use the GET request method instead of HEAD (default). Defaults to False.
+            json (bool, optional): Flag indicating whether to output the results in JSON format. Defaults to False.
         """
         session = HeaderService(self.service_config)
         session.url = url
