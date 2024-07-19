@@ -1,0 +1,37 @@
+[project]
+name = "phrenology" 
+version = "0.1.0"  
+description = "Phrenology is a lightweight extendable and scalable tool for inspecting security headers in responses from webservers.  This project is striving to use as few non-standard installed python libraries as possible while maintaining as much functionality as possible."  
+
+[project.urls]
+# Add any relevant project URLs (homepage, documentation, etc.)
+Homepage = "https://github.com/f8al/phrenology"
+
+[project.license]
+# Specify the license under which your project is distributed (e.g., MIT)
+# license = "MIT"
+
+[build-system]
+requires = ["setuptools",
+    "requests",
+    "urllib"]
+
+# Optional sections (if applicable)
+
+[dev-dependencies]
+requires = ['unittest']
+
+classifiers = [
+    'Development Status :: 3 - Alpha',
+    'Intended Audience :: Developers',
+    'Intended Audience :: Information Technology',
+    'Natural Language :: English',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.13',
+    'Topic :: Internet :: WWW/HTTP',
+    'Topic :: Security',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+    'Topic :: Utilities'
+]
