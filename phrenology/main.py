@@ -42,20 +42,20 @@ class Main:
             information_headers = {"result":["info","info"],"items":["X-Powered-By", "Server", "x-AspNet-Version", "X-AspNetMvc-Version"]}
             cache_headers = {"result":["info","info"],"items":["Cache-Control", "Pragma", "Last-Modified", "Expires", "ETag"]}
           
-            self.run('Expected headers',expected_headers, headers_model)
+            self.run('Expected headers',session.url,expected_headers, headers_model)
             if(deprecated):
-                self.run('Deprecated headers', deprecated_headers, headers_model)
+                self.run('Deprecated headers',session.url, deprecated_headers, headers_model)
             if(information):
-                self.run('Informational headers', information_headers, headers_model)
+                self.run('Informational headers',session.url, information_headers, headers_model)
             if(cache):
-                self.run('Cacheing headers', cache_headers, headers_model)
+                self.run('Cacheing headers',session.url, cache_headers, headers_model)
         else:
             self._output = {
                 "type": "error",
                 "message": "Failed to retrieve headers."
             }
 
-    def run(self, name, headers, headers_model):
+    def run(self, name, url, headers, headers_model):
         """
         Processes and outputs header data based on the provided name, headers configuration, and headers model.
 
@@ -73,8 +73,8 @@ class Main:
         query_result = headers_model.query(headers["items"])
         # render header types block
 
-        self.output.render_output('counts', name, headers["result"], query_result["counts"])
-        self.output.render_output('list', name, headers["result"], {
+        self.output.render_output('counts', name, url, headers["result"], query_result["counts"])
+        self.output.render_output('list', name, url, headers["result"], {
             "expected": headers_model.expected,
             "missing": headers_model.missing,
             "present": headers_model.present

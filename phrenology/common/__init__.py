@@ -41,9 +41,9 @@ from .output_template import Template
 class _Namespace:
     pass
 
-output = _Namespace()
-output.Abstract = OutputAbstract
-output.Template = Template
+render = _Namespace()
+render.Abstract = OutputAbstract
+render.Template = Template
 
 """
 **************************************************************
@@ -105,7 +105,7 @@ output.Template = Template
 **************************************************************
 """
 # Defining the public interface of this package
-__all__ = ['output']
+__all__ = ['output', 'render']
 
 
 #**************************************************************
