@@ -46,7 +46,7 @@ class Template(OutputAbstract):
     def __init__(self):
         self.name =''
 
-    def _render_banner(self, name=None, result=None, data=None):
+    def _render_banner(self, url=None, name=None, result=None, data=None):
         print('           __                          __                 ')
         print('    ____  / /_  ________  ____  ____  / /___  ____ ___  __')
         print('   / __ \\/ __ \\/ ___/ _ \\/ __ \\/ __ \\/ / __ \\/ __ `/ / / /')
@@ -57,7 +57,7 @@ class Template(OutputAbstract):
         print('           SecurityShrimp/DataMinion 2024                 ')
         print('\n\n')
 
-    def render_output(self, output_type, name=None,result=None, data = None):
+    def render_output(self, output_type, url=None, name=None,result=None, data = None):
         """
         Renders the output based on its type.
 
@@ -68,11 +68,11 @@ class Template(OutputAbstract):
         method_name = f"_render_{output_type}"
         method = getattr(self, method_name, None)
         if callable(method):
-            method(name, result, data)
+            method(name, url, result, data)
         else:
             raise AttributeError(f"No render method found for type '{output_type}'")
 
-    def _render_counts(self, name, result, data):
+    def _render_counts(self, name, url, result, data):
         """
         Renders the counts output.
 
@@ -91,7 +91,7 @@ class Template(OutputAbstract):
             
             #print(colorize(f"\t{key}: {value}",alert))
            
-    def _render_list(self, name, result, data):
+    def _render_list(self, name, url, result, data):
         """
         Renders the list output.
 
@@ -99,7 +99,7 @@ class Template(OutputAbstract):
             data (dict): The data to render.
         """
         
-        domain = data['present']['Location']
+        domain = url
         colorbang = colorize("!", "error")
         colorsplat = colorize("*", "info")
 
@@ -111,7 +111,7 @@ class Template(OutputAbstract):
         for key, value in data["missing"].items():
             print(f"[{colorbang}] Missing security header: {colorize(key, 'error')}")
 
-    def _render_read(self, name, result, data):
+    def _render_read(self, name, url, result, data):
         """
         Renders the read output.
 
@@ -123,7 +123,7 @@ class Template(OutputAbstract):
         for key, value in data.items():
             print(f"\t{key}: {value}")
 
-    def _render_error(self, name, result, data):
+    def _render_error(self, name, url, result, data):
         """
         Renders the error output.
 

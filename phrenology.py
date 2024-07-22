@@ -1,7 +1,7 @@
 #!/bin/env python3
 import argparse
 from phrenology import Main
-from phrenology.common.output import Template
+from phrenology.common import render
 def main(output):
     parser = argparse.ArgumentParser(description='Phrenology CLI')
     parser.add_argument('-u', '--url', dest='url', type=str, help='URL to check headers', required=False)
@@ -35,4 +35,4 @@ def main(output):
    # main_obj.engage(args.url, args.cookie, args.cache, args.deprecated, args.information, args.get, args.json)
 
 if __name__ == "__main__":
-    main(Template())
+    main(render.Template())
