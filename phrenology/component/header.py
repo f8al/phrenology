@@ -371,11 +371,17 @@ class HeaderService:
         Args:
             value (bool or str): True to enable SSL verification, False to disable, or a path to a CA_BUNDLE file.
 
-        Example:
-            >>> service.verify = True
-            >>> service.verify = "/path/to/certfile"
+        Raises:
+            ValueError: If the value is not a boolean or a string.
         """
-        self._config['verify'] = value
+
+        if isinstance(value, bool):
+            self._config['verify'] = value
+        elif isinstance(value, str):
+            # You might want to add validation for the string here, e.g., check if it's a valid file path
+            self._config['verify'] = value
+        else:
+            raise ValueError("Invalid value for SSL verification: must be a boolean or a string.")
 
     @property
     def cert(self):
