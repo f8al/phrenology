@@ -36,12 +36,12 @@ class Main:
                                 "Permissions-Policy", "X-Frame-Options", "Strict-Transport-Security",
                                 "Content-Security-Policy", "Cross-Origin-Embedder-Policy", "Cross-Origin-Resource-Policy",
                                 "Cross-Origin-Opener-Policy","Referrer-Policy"]}
-            
+
             deprecated_headers = {"result":["warn","success"],"items":["X-XSS-Protection", "Expect-CT", "X-Permitted-Cross-Domain-Policies"]}
-            
+
             information_headers = {"result":["info","info"],"items":["X-Powered-By", "Server", "x-AspNet-Version", "X-AspNetMvc-Version"]}
             cache_headers = {"result":["info","info"],"items":["Cache-Control", "Pragma", "Last-Modified", "Expires", "ETag"]}
-          
+
             self.run('Expected headers',session.url,expected_headers, headers_model)
             if(deprecated):
                 self.run('Deprecated headers',session.url, deprecated_headers, headers_model)
@@ -82,3 +82,4 @@ class Main:
         #self.output.render_output('read', name, headers["result"], {
         #    'Content-Type': headers_model.read('Content-Type')
         #})
+        
