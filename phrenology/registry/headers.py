@@ -30,7 +30,8 @@ INFORMATION_HEADERS = {
                                 "X-Powered-By", 
                                 "Server", 
                                 "x-AspNet-Version", 
-                                "X-AspNetMvc-Version"
+                                "X-AspNetMvc-Version",
+                                "CF-RAY"
                                 ]
                         }
 CACHE_HEADERS = {
