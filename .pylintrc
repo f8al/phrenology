@@ -3,3 +3,4 @@ max-line-length=150
 
 [MESSAGES CONTROL]
 disable=superfluous-parens
+disable=invalid-name
