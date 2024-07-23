@@ -1,6 +1,11 @@
 from .output import OutputAbstract
-
+"""
+Contains all of the methods for processing and displaying output from phrenology lib
+"""
 class darkcolors:
+    """
+    sets colors to dark values
+    """
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
@@ -12,6 +17,9 @@ class darkcolors:
 
 
 class lightcolors:
+    """
+    sets colors to light values
+    """
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
@@ -37,9 +45,9 @@ def colorize(string, alert, colors=None):
     return color[alert] if alert in color else string
 
 def colorize_exclamation_and_key(key, alert):
-  exclamation_point = colorize("!", "error")  # Adjust color as needed
-  colored_key = colorize(key, alert)
-  return f"[!] Missing security header: {exclamation_point} {colored_key}"
+    exclamation_point = colorize("!", "error")  # Adjust color as needed
+    colored_key = colorize(key, alert)
+    return f"[!] Missing security header: {exclamation_point} {colored_key}"
 
 
 class Template(OutputAbstract):
@@ -47,6 +55,12 @@ class Template(OutputAbstract):
         self.name =''
 
     def _render_banner(self, url=None, name=None, result=None, data=None):
+        """
+        Renders the Banner
+
+        Args:
+            none
+        """
         print('           __                          __                 ')
         print('    ____  / /_  ________  ____  ____  / /___  ____ ___  __')
         print('   / __ \\/ __ \\/ ___/ _ \\/ __ \\/ __ \\/ / __ \\/ __ `/ / / /')
@@ -57,7 +71,7 @@ class Template(OutputAbstract):
         print('           SecurityShrimp/DataMinion 2024                 ')
         print('\n\n')
 
-    def render_output(self, output_type, url=None, name=None,result=None, data = None):
+    def render_output(self, output_type, url=None, name=None, result=None, data=None):
         """
         Renders the output based on its type.
 
@@ -88,9 +102,9 @@ class Template(OutputAbstract):
                 alert = result[1]
             else:
                 alert = "info"
-            
+
             #print(colorize(f"\t{key}: {value}",alert))
-           
+
     def _render_list(self, name, url, result, data):
         """
         Renders the list output.
@@ -98,7 +112,7 @@ class Template(OutputAbstract):
         Args:
             data (dict): The data to render.
         """
-        
+
         domain = url
         colorbang = colorize("!", "error")
         colorsplat = colorize("*", "info")
