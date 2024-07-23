@@ -45,7 +45,8 @@ class TestMethodProperty(BaseTestHeaderService):
             with self.subTest(method=method):
                 with self.assertRaises(ValueError) as context:
                     self.service.method = method
-                self.assertEqual(str(context.exception), "Invalid method input: your method is not currently supported please use GET HEAD or OPTIONS")
+                self.assertEqual(str(context.exception),
+                                 "Invalid method input: your method is not currently supported please use GET HEAD or OPTIONS")
 
     def test_when_I_set_the_method_to_an_ivalid_HTTP_method(self):
         """
@@ -166,7 +167,7 @@ class TestVerifyProperty(BaseTestHeaderService):
             with self.subTest(value=value):
                 with self.assertRaises(ValueError):
                     self.service.verify = value
-                    
+
 class TestCertProperty(BaseTestHeaderService):
 
     def test_when_I_set_a_new_cert_path(self):
@@ -181,7 +182,7 @@ class TestCertProperty(BaseTestHeaderService):
 
 class TestUrlProperty(BaseTestHeaderService):
     """Group of tests for the URL property to check different URL formats."""
-    
+
     def test_when_I_set_an_IP_url_badly(self):
         """
         When I set an IP URL badly,
@@ -201,7 +202,7 @@ class TestUrlProperty(BaseTestHeaderService):
         new_url = 'http://192.168.1.1'
         self.service.url = new_url
         self.assertEqual(self.service.url, new_url)
-    
+
     def test_when_I_set_an_IP_url_with_a_port(self):
         """
         When I set an IP URL with a port,
@@ -335,7 +336,7 @@ class TestUrlProperty(BaseTestHeaderService):
         new_url = 'aws.cloud.digitalminion.com'
         self.service.url = new_url
         self.assertEqual(self.service.url, 'https://aws.cloud.digitalminion.com')
-    
+
     def test_when_I_miss_position_a_dot_on_the_fqdn(self):
         """
         When I miss position a dot on the fqdn,
@@ -362,7 +363,7 @@ class TestUrlProperty(BaseTestHeaderService):
             new_url = 'http://example.com/测试'
             self.service.url = new_url
             self.assertEqual(self.service.url, new_url)
-        
+
         def test_when_I_set_a_url_with_user_info(self):
             """
             When I set a URL with user info,
@@ -371,7 +372,7 @@ class TestUrlProperty(BaseTestHeaderService):
             new_url = 'http://user:pass@example.com'
             self.service.url = new_url
             self.assertEqual(self.service.url, new_url)
-        
+
         def test_when_I_set_a_url_with_fragment(self):
             """
             When I set a URL with a fragment,
