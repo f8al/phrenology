@@ -1,5 +1,5 @@
 #!/bin/env python3
-
+# pylint: disable=wrong-import-position
 """
 **************************************************************
 *           src.component package initialization.            *
@@ -65,3 +65,5 @@ __all__ = ['Header']
 
 # Clean up the module namespace
 del _Namespace, HeaderModel, HeaderService
+
+# pylint: enable=wrong-import-position

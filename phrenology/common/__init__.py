@@ -1,4 +1,5 @@
 #!/bin/env python3
+# pylint: disable=wrong-import-position
 
 """
 **************************************************************
@@ -111,3 +112,5 @@ __all__ = ['output', 'render']
 #**************************************************************
 # Clean up the module namespace
 del _Namespace, OutputAbstract, Template
+
+# pylint: enable=wrong-import-position
