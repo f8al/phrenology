@@ -1,5 +1,6 @@
 #!/bin/env python3
 
+# pylint: disable=line-too-long
 expected_security_responses = {
     'X-Frame-Options':'DENY', # no longer best practice. Use Content Security Policy (CSP) frame-ancestors directive if possible.
     'X-Content-Type-Options':'nosniff', # Set the Content-Type header correctly throughout the site. nosniff blocks MIME type sniffing
@@ -29,3 +30,4 @@ bad_security_headers = {
 potentially_interesting_headers = {
     'Server':'webserver' # Remove this header or set non-informative values.
     }
+# pylint: enable=line-too-long
