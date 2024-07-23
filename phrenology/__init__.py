@@ -1,5 +1,5 @@
 #!/bin/env python3
-
+# pylint: disable=wrong-import-position
 
 
 
@@ -97,3 +97,5 @@ from .main import Main
 
 # Defining the public interface of this package
 __all__ = ['common', 'component', 'registry', 'Main']
+
+# pylint: enable=wrong-import-position
