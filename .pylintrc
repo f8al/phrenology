@@ -8,7 +8,7 @@ max-line-length=200
 
 [MESSAGES CONTROL]
 # disable superflous parens and pascalcase warnings
-disable=superfluous-parens,invalid-name
+disable=superfluous-parens,invalid-name,too-few-public-methods
 
 [BASIC]
 # Allow both snake_case and PascalCase for variable and function names
