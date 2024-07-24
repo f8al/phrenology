@@ -263,12 +263,11 @@ class HeaderService:
         Args:
             value (dict): The headers.
 
-        Example:
-            >>> service.headers = {
-            ...     "User-Agent": "my-app",
-            ...     "Accept": "application/json"
-            ... }
+        Raises:
+            ValueError: If the provided value is not a dictionary.
         """
+        if not isinstance(value, dict):
+            raise ValueError("Invalid headers input: input provided was malformed")
         self._config['headers'] = value
 
     @property
