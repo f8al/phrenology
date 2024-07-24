@@ -22,7 +22,7 @@ pip install phrenology
 
 # Replace with your project information
 PROJECT_NAME = "phrenology"
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 DESCRIPTION = "A tool for analyzing your security HEADers"
 AUTHOR = "SecurityShrimp"
 AUTHOR_EMAIL = "securityshrimp@proton.me"
@@ -47,7 +47,8 @@ classifiers = [
 # Dependencies (replace with your required packages)
 dependencies = [
     "requests",
-    "urllib"
+    "urllib",
+    "pylint"
 ]
 
 setup(
