@@ -38,9 +38,11 @@ from .output_template import Template
 **************************************************************
 """
 
+
 # Creating a namespace for Output classes
 class _Namespace:
     pass
+
 
 render = _Namespace()
 render.Abstract = OutputAbstract
@@ -106,10 +108,10 @@ render.Template = Template
 **************************************************************
 """
 # Defining the public interface of this package
-__all__ = ['output', 'render']
+__all__ = ["output", "render"]
 
 
-#**************************************************************
+# **************************************************************
 # Clean up the module namespace
 del _Namespace, OutputAbstract, Template
 

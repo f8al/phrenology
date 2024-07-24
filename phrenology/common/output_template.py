@@ -1,33 +1,39 @@
 from .output import OutputAbstract
+
 """
 Contains all of the methods for processing and displaying output from phrenology lib
 """
+
+
 class darkcolors:
     """
     sets colors to dark values
     """
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
 
 
 class lightcolors:
     """
     sets colors to light values
     """
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[95m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[95m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
+
 
 def colorize(string, alert, colors=None):
     bcolors = darkcolors
@@ -36,13 +42,14 @@ def colorize(string, alert, colors=None):
     elif colors == "none":
         return string
     color = {
-        'error':    bcolors.FAIL + string + bcolors.ENDC,
-        'warning':  bcolors.WARNING + string + bcolors.ENDC,
-        'success':       bcolors.OKGREEN + string + bcolors.ENDC,
-        'info':     bcolors.OKBLUE + string + bcolors.ENDC,
-        'deprecated': string # No color for deprecated headers or not-an-issue ones
+        "error": bcolors.FAIL + string + bcolors.ENDC,
+        "warning": bcolors.WARNING + string + bcolors.ENDC,
+        "success": bcolors.OKGREEN + string + bcolors.ENDC,
+        "info": bcolors.OKBLUE + string + bcolors.ENDC,
+        "deprecated": string,  # No color for deprecated headers or not-an-issue ones
     }
     return color[alert] if alert in color else string
+
 
 def colorize_exclamation_and_key(key, alert):
     exclamation_point = colorize("!", "error")  # Adjust color as needed
@@ -52,7 +59,7 @@ def colorize_exclamation_and_key(key, alert):
 
 class Template(OutputAbstract):
     def __init__(self):
-        self.name =''
+        self.name = ""
 
     def _render_banner(self, url=None, name=None, result=None, data=None):
         """
@@ -61,15 +68,15 @@ class Template(OutputAbstract):
         Args:
             none
         """
-        print('           __                          __                 ')
-        print('    ____  / /_  ________  ____  ____  / /___  ____ ___  __')
-        print('   / __ \\/ __ \\/ ___/ _ \\/ __ \\/ __ \\/ / __ \\/ __ `/ / / /')
-        print('  / /_/ / / / / /  /  __/ / / / /_/ / / /_/ / /_/ / /_/ / ')
-        print(' / .___/_/ /_/_/   \\___/_/ /_/\\____/_/\\____/\\__, /\\__, /  ')
-        print('/_/                                        /____//____/   ')
-        print('      A simple tool for checking security HEADers         ')
-        print('           SecurityShrimp/DataMinion 2024                 ')
-        print('\n\n')
+        print("           __                          __                 ")
+        print("    ____  / /_  ________  ____  ____  / /___  ____ ___  __")
+        print("   / __ \\/ __ \\/ ___/ _ \\/ __ \\/ __ \\/ / __ \\/ __ `/ / / /")
+        print("  / /_/ / / / / /  /  __/ / / / /_/ / / /_/ / /_/ / /_/ / ")
+        print(" / .___/_/ /_/_/   \\___/_/ /_/\\____/_/\\____/\\__, /\\__, /  ")
+        print("/_/                                        /____//____/   ")
+        print("      A simple tool for checking security HEADers         ")
+        print("           SecurityShrimp/DataMinion 2024                 ")
+        print("\n\n")
 
     def render_output(self, output_type, url=None, name=None, result=None, data=None):
         """
@@ -93,17 +100,17 @@ class Template(OutputAbstract):
         Args:
             data (dict): The data to render.
         """
-        #print("************************************")
-        #print(f"**          {name}: Counts Example        **\n")
+        # print("************************************")
+        # print(f"**          {name}: Counts Example        **\n")
         for key, value in data.items():
-            if (key == "expected"):
+            if key == "expected":
                 alert = result[0]
-            elif (key == "missing"):
+            elif key == "missing":
                 alert = result[1]
             else:
                 alert = "info"
 
-            #print(colorize(f"\t{key}: {value}",alert))
+            # print(colorize(f"\t{key}: {value}",alert))
 
     def _render_list(self, name, url, result, data):
         """
@@ -118,10 +125,12 @@ class Template(OutputAbstract):
         colorsplat = colorize("*", "info")
 
         print(f"[*] Analyzing {colorize(name, 'info')} of {colorize(domain, 'info')}")
-        #for key, value in data["expected"].items():
+        # for key, value in data["expected"].items():
         #    print(f'[{colorsplat}] Security headers expected for analysis: {key}')
         for key, value in data["present"].items():
-            print(f"[{colorsplat}] Header {colorize(key, 'success')} is present! (Value: {colorize(value, 'info')})")
+            print(
+                f"[{colorsplat}] Header {colorize(key, 'success')} is present! (Value: {colorize(value, 'info')})"
+            )
         for key, value in data["missing"].items():
             print(f"[{colorbang}] Missing security header: {colorize(key, 'error')}")
 

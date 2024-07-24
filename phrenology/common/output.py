@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 
+
 class OutputAbstract(ABC):
     @abstractmethod
-    def render_output(self, output_type, data = None):
+    def render_output(self, output_type, data=None):
         pass
 
     @abstractmethod

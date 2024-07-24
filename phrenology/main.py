@@ -1,6 +1,7 @@
 #!/bin/env python3
 from .component.header import HeaderService
 
+
 class Main:
     """
     The main class responsible for initiating the header checking process and presenting the results.
@@ -32,28 +33,68 @@ class Main:
         session.url = url
         headers_model = session.run_request()
         if headers_model:
-            expected_headers = {"result":["success","error"],"items":["X-Frame-Options", "X-Content-Type-Options", "Strict-Transport-Security",
-                                "Permissions-Policy", "X-Frame-Options", "Strict-Transport-Security",
-                                "Content-Security-Policy", "Cross-Origin-Embedder-Policy", "Cross-Origin-Resource-Policy",
-                                "Cross-Origin-Opener-Policy","Referrer-Policy"]}
-
-            deprecated_headers = {"result":["warn","success"],"items":["X-XSS-Protection", "Expect-CT", "X-Permitted-Cross-Domain-Policies"]}
-
-            information_headers = {"result":["info","info"],"items":["X-Powered-By", "Server", "x-AspNet-Version", "X-AspNetMvc-Version"]}
-            cache_headers = {"result":["info","info"],"items":["Cache-Control", "Pragma", "Last-Modified", "Expires", "ETag"]}
-
-            self.run('Expected headers',session.url,expected_headers, headers_model)
-            if(deprecated):
-                self.run('Deprecated headers',session.url, deprecated_headers, headers_model)
-            if(information):
-                self.run('Informational headers',session.url, information_headers, headers_model)
-            if(cache):
-                self.run('Cacheing headers',session.url, cache_headers, headers_model)
-        else:
-            self._output = {
-                "type": "error",
-                "message": "Failed to retrieve headers."
+            expected_headers = {
+                "result": ["success", "error"],
+                "items": [
+                    "X-Frame-Options",
+                    "X-Content-Type-Options",
+                    "Strict-Transport-Security",
+                    "Permissions-Policy",
+                    "X-Frame-Options",
+                    "Strict-Transport-Security",
+                    "Content-Security-Policy",
+                    "Cross-Origin-Embedder-Policy",
+                    "Cross-Origin-Resource-Policy",
+                    "Cross-Origin-Opener-Policy",
+                    "Referrer-Policy",
+                ],
             }
+
+            deprecated_headers = {
+                "result": ["warn", "success"],
+                "items": [
+                    "X-XSS-Protection",
+                    "Expect-CT",
+                    "X-Permitted-Cross-Domain-Policies",
+                ],
+            }
+
+            information_headers = {
+                "result": ["info", "info"],
+                "items": [
+                    "X-Powered-By",
+                    "Server",
+                    "x-AspNet-Version",
+                    "X-AspNetMvc-Version",
+                ],
+            }
+            cache_headers = {
+                "result": ["info", "info"],
+                "items": [
+                    "Cache-Control",
+                    "Pragma",
+                    "Last-Modified",
+                    "Expires",
+                    "ETag",
+                ],
+            }
+
+            self.run("Expected headers", session.url, expected_headers, headers_model)
+            if deprecated:
+                self.run(
+                    "Deprecated headers", session.url, deprecated_headers, headers_model
+                )
+            if information:
+                self.run(
+                    "Informational headers",
+                    session.url,
+                    information_headers,
+                    headers_model,
+                )
+            if cache:
+                self.run("Cacheing headers", session.url, cache_headers, headers_model)
+        else:
+            self._output = {"type": "error", "message": "Failed to retrieve headers."}
 
     def run(self, name, url, headers, headers_model):
         """
@@ -69,17 +110,23 @@ class Main:
         # Logic for processing and rendering header types block remains unchanged
         """
 
-
         query_result = headers_model.query(headers["items"])
         # render header types block
 
-        self.output.render_output('counts', name, url, headers["result"], query_result["counts"])
-        self.output.render_output('list', name, url, headers["result"], {
-            "expected": headers_model.expected,
-            "missing": headers_model.missing,
-            "present": headers_model.present
-        })
-        #self.output.render_output('read', name, headers["result"], {
+        self.output.render_output(
+            "counts", name, url, headers["result"], query_result["counts"]
+        )
+        self.output.render_output(
+            "list",
+            name,
+            url,
+            headers["result"],
+            {
+                "expected": headers_model.expected,
+                "missing": headers_model.missing,
+                "present": headers_model.present,
+            },
+        )
+        # self.output.render_output('read', name, headers["result"], {
         #    'Content-Type': headers_model.read('Content-Type')
-        #})
-        
+        # })

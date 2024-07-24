@@ -1,6 +1,7 @@
 import re
 import requests
-#from urllib.parse import urlparse, urlunparse
+
+# from urllib.parse import urlparse, urlunparse
 from requests.exceptions import HTTPError, Timeout, RequestException
 
 
@@ -74,10 +75,11 @@ class HeaderModel:
             "counts": {
                 "expected": len(self.expected),
                 "missing": len(self.missing),
-                "present": len(self.present)
+                "present": len(self.present),
             }
         }
         return counts
+
 
 class HeaderService:
     """
@@ -108,12 +110,12 @@ class HeaderService:
         """
         self.session = requests.Session()
         self._method = ""
-        self._url =""
+        self._url = ""
         self._config = {}
         try:
             if config:
                 self.config = config
-            if 'method' not in config:
+            if "method" not in config:
                 raise ValueError("Configuration must include 'method'.")
         except Exception as e:
             raise ValueError(f"Invalid configuration: {e}")
@@ -137,7 +139,7 @@ class HeaderService:
             value (dict): The configuration dictionary.
         """
         for key, val in value.items():
-            setter_name = f'{key}'
+            setter_name = f"{key}"
             if hasattr(self, setter_name):
                 setattr(self, setter_name, val)
             else:
@@ -153,7 +155,6 @@ class HeaderService:
         """
         return self._method
 
-    
     @method.setter
     def method(self, value):
         """
@@ -166,17 +167,21 @@ class HeaderService:
             ValueError: If the method is invalid or unsupported.
         """
 
-        valid_methods = ['GET', 'HEAD', 'OPTIONS', 'get', 'head', 'options']
-        unsupported_methods = ['POST', 'PUT', 'DELETE', 'PATCH', 'TRACE', 'CONNECT']
+        valid_methods = ["GET", "HEAD", "OPTIONS", "get", "head", "options"]
+        unsupported_methods = ["POST", "PUT", "DELETE", "PATCH", "TRACE", "CONNECT"]
 
         if isinstance(value, str):
             value = value.upper()
             if value in valid_methods:
                 self._method = value
             elif value in unsupported_methods:
-                raise ValueError("Invalid method input: your method is not currently supported please use GET HEAD or OPTIONS")
+                raise ValueError(
+                    "Invalid method input: your method is not currently supported please use GET HEAD or OPTIONS"
+                )
             else:
-                raise ValueError("Invalid method input: your method is invalid please use GET HEAD or OPTIONS")
+                raise ValueError(
+                    "Invalid method input: your method is invalid please use GET HEAD or OPTIONS"
+                )
         else:
             raise TypeError("Method must be a string")
 
@@ -194,7 +199,7 @@ class HeaderService:
             ...     "https": "http://10.10.1.10:1080"
             ... }
         """
-        return self._config.get('proxy')
+        return self._config.get("proxy")
 
     @proxy.setter
     def proxy(self, value):
@@ -210,7 +215,7 @@ class HeaderService:
             ...     "https": "http://10.10.1.10:1080"
             ... }
         """
-        self._config['proxy'] = value
+        self._config["proxy"] = value
         self.session.proxies.update(value)
 
     @property
@@ -224,7 +229,7 @@ class HeaderService:
         Example:
             >>> service.params = {"key1": "value1", "key2": "value2"}
         """
-        return self._config.get('params')
+        return self._config.get("params")
 
     @params.setter
     def params(self, value):
@@ -237,7 +242,7 @@ class HeaderService:
         Example:
             >>> service.params = {"key1": "value1", "key2": "value2"}
         """
-        self._config['params'] = value
+        self._config["params"] = value
 
     @property
     def headers(self):
@@ -253,7 +258,7 @@ class HeaderService:
             ...     "Accept": "application/json"
             ... }
         """
-        return self._config.get('headers')
+        return self._config.get("headers")
 
     @headers.setter
     def headers(self, value):
@@ -268,7 +273,7 @@ class HeaderService:
         """
         if not isinstance(value, dict):
             raise ValueError("Invalid headers input: input provided was malformed")
-        self._config['headers'] = value
+        self._config["headers"] = value
 
     @property
     def auth(self):
@@ -281,7 +286,7 @@ class HeaderService:
         Example:
             >>> service.auth = ("user", "pass")
         """
-        return self._config.get('auth')
+        return self._config.get("auth")
 
     @auth.setter
     def auth(self, value):
@@ -294,7 +299,7 @@ class HeaderService:
         Example:
             >>> service.auth = ("user", "pass")
         """
-        self._config['auth'] = value
+        self._config["auth"] = value
 
     @property
     def timeout(self):
@@ -307,7 +312,7 @@ class HeaderService:
         Example:
             >>> service.timeout = 5
         """
-        return self._config.get('timeout')
+        return self._config.get("timeout")
 
     @timeout.setter
     def timeout(self, value):
@@ -320,7 +325,7 @@ class HeaderService:
         Example:
             >>> service.timeout = 5
         """
-        self._config['timeout'] = value
+        self._config["timeout"] = value
 
     @property
     def allow_redirects(self):
@@ -333,7 +338,7 @@ class HeaderService:
         Example:
             >>> service.allow_redirects = False
         """
-        return self._config.get('allow_redirects', True)
+        return self._config.get("allow_redirects", True)
 
     @allow_redirects.setter
     def allow_redirects(self, value):
@@ -346,7 +351,7 @@ class HeaderService:
         Example:
             >>> service.allow_redirects = False
         """
-        self._config['allow_redirects'] = value
+        self._config["allow_redirects"] = value
 
     @property
     def verify(self):
@@ -360,7 +365,7 @@ class HeaderService:
             >>> service.verify = True
             >>> service.verify = "/path/to/certfile"
         """
-        return self._config.get('verify')
+        return self._config.get("verify")
 
     @verify.setter
     def verify(self, value):
@@ -375,12 +380,14 @@ class HeaderService:
         """
 
         if isinstance(value, bool):
-            self._config['verify'] = value
+            self._config["verify"] = value
         elif isinstance(value, str):
             # You might want to add validation for the string here, e.g., check if it's a valid file path
-            self._config['verify'] = value
+            self._config["verify"] = value
         else:
-            raise ValueError("Invalid value for SSL verification: must be a boolean or a string.")
+            raise ValueError(
+                "Invalid value for SSL verification: must be a boolean or a string."
+            )
 
     @property
     def cert(self):
@@ -394,7 +401,7 @@ class HeaderService:
             >>> service.cert = "/path/to/certfile"
             >>> service.cert = ("/path/client.cert", "/path/client.key")
         """
-        return self._config.get('cert')
+        return self._config.get("cert")
 
     @cert.setter
     def cert(self, value):
@@ -408,7 +415,7 @@ class HeaderService:
             >>> service.cert = "/path/to/certfile"
             >>> service.cert = ("/path/client.cert", "/path/client.key")
         """
-        self._config['cert'] = value
+        self._config["cert"] = value
 
     @property
     def url(self):
@@ -423,7 +430,7 @@ class HeaderService:
     #     1. Checks for invalid protocols (ftp, mailto, file) and raises an error if found.
     #     2. Ensures the URL starts with 'http://' or 'https://'. If not, 'https://' is prepended.
     #     3. Parses the URL into scheme, netloc (FQDN), path, and query components.
-    #     4. Validates the FQDN to ensure it contains at least one dot, does not start or end with a dot, 
+    #     4. Validates the FQDN to ensure it contains at least one dot, does not start or end with a dot,
     #        and does not contain consecutive dots ('..').
     #     5. Performs additional validation for IP addresses to ensure they have exactly four octets.
     #     6. Ensures the URL does not contain any spaces.
@@ -487,16 +494,16 @@ class HeaderService:
         1. Checks for invalid protocols (ftp, mailto, file) and raises an error if found.
         2. Ensures the URL starts with 'http://' or 'https://'. If not, 'https://' is prepended.
         3. Parses the URL into scheme, netloc (FQDN), path, and query components.
-        4. Validates the FQDN to ensure it contains at least one dot, does not start or end with a dot, 
+        4. Validates the FQDN to ensure it contains at least one dot, does not start or end with a dot,
            and does not contain consecutive dots ('..').
         5. Performs additional validation for IP addresses to ensure they have exactly four octets.
         6. Ensures the URL does not contain any spaces.
         7. Reconstructs the URL and assigns it to the internal `_url` attribute.
 
-        The decision to avoid using outside libraries such as `urllib` is to demonstrate how URL parsing 
-        and validation can be handled manually. This approach provides more control over the parsing 
-        process and allows for custom validation logic. However, it is important to note that using 
-        standard libraries like `urllib` can simplify the code and provide robust handling of edge cases 
+        The decision to avoid using outside libraries such as `urllib` is to demonstrate how URL parsing
+        and validation can be handled manually. This approach provides more control over the parsing
+        process and allows for custom validation logic. However, it is important to note that using
+        standard libraries like `urllib` can simplify the code and provide robust handling of edge cases
         in real-world applications.
 
         Args:
@@ -506,45 +513,55 @@ class HeaderService:
             ValueError: If the URL is invalid or contains unsupported protocols.
         """
         # Check for invalid protocols
-        invalid_protocols = ['ftp://', 'mailto:', 'file://']
+        invalid_protocols = ["ftp://", "mailto:", "file://"]
         for protocol in invalid_protocols:
             if value.startswith(protocol):
-                raise ValueError(f"Invalid URL input: {protocol.strip(':')} protocol does not return headers.")
+                raise ValueError(
+                    f"Invalid URL input: {protocol.strip(':')} protocol does not return headers."
+                )
         # Ensure the URL starts with http or https
-        if not value.startswith(('http://', 'https://')):
+        if not value.startswith(("http://", "https://")):
             value = f"https://{value}"
         # Extract the scheme and the rest of the URL
-        if '://' in value:
-            scheme, rest = value.split('://', 1)
+        if "://" in value:
+            scheme, rest = value.split("://", 1)
         else:
-            scheme, rest = 'https', value
+            scheme, rest = "https", value
         # Check for presence of '/' or '?'
-        if '/' in rest:
-            netloc, path_query = rest.split('/', 1)
-            path_query = '/' + path_query
-        elif '?' in rest:
-            netloc, path_query = rest.split('?', 1)
-            path_query = '?' + path_query
+        if "/" in rest:
+            netloc, path_query = rest.split("/", 1)
+            path_query = "/" + path_query
+        elif "?" in rest:
+            netloc, path_query = rest.split("?", 1)
+            path_query = "?" + path_query
         else:
-            netloc, path_query = rest, ''
+            netloc, path_query = rest, ""
         # Further split path and query
-        if '?' in path_query:
-            path, query = path_query.split('?', 1)
+        if "?" in path_query:
+            path, query = path_query.split("?", 1)
         else:
-            path, query = path_query, ''
+            path, query = path_query, ""
         # Validate the netloc
-        if not netloc or '.' not in netloc or '..' in netloc or netloc.startswith('.') or netloc.endswith('.'):
-            raise ValueError("Invalid URL input: your url is malformed please check it and try again.")
+        if (
+            not netloc
+            or "." not in netloc
+            or ".." in netloc
+            or netloc.startswith(".")
+            or netloc.endswith(".")
+        ):
+            raise ValueError(
+                "Invalid URL input: your url is malformed please check it and try again."
+            )
         # Validate the IP address
-        if all(char.isdigit() or char == '.' for char in netloc):
-            octets = netloc.split('.')
+        if all(char.isdigit() or char == "." for char in netloc):
+            octets = netloc.split(".")
             if len(octets) != 4:
                 raise ValueError("Invalid URL input: dude seriously?")
             for octet in octets:
                 if not (0 <= int(octet) <= 255):
                     raise ValueError("Invalid URL input: dude seriously?")
         # Final check for invalid characters
-        if ' ' in value:
+        if " " in value:
             raise ValueError("Invalid URL format")
         # Rebuild the URL
         final_url = f"{scheme}://{netloc}"
@@ -553,7 +570,7 @@ class HeaderService:
         if query:
             final_url += f"?{query}"
         self._url = final_url
-    
+
     def _handle_response(self, response):
         """
         Handles the HTTP response, raising errors for bad responses.
@@ -567,11 +584,11 @@ class HeaderService:
         try:
             response.raise_for_status()
         except HTTPError as http_err:
-            raise RuntimeError(f'HTTP error occurred: {http_err}')
+            raise RuntimeError(f"HTTP error occurred: {http_err}")
         except Timeout as timeout_err:
-            raise RuntimeError(f'Timeout error occurred: {timeout_err}')
+            raise RuntimeError(f"Timeout error occurred: {timeout_err}")
         except RequestException as req_err:
-            raise RuntimeError(f'Error occurred: {req_err}')
+            raise RuntimeError(f"Error occurred: {req_err}")
 
     def _handle_headers(self, response):
         """
@@ -606,7 +623,4 @@ class HeaderService:
             response_headers = self._handle_headers(response)
             return response_headers
         except RequestException as e:
-            raise RuntimeError(f'An error occurred: {e}')
-
-
-
+            raise RuntimeError(f"An error occurred: {e}")

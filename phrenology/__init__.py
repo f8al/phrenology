@@ -2,7 +2,6 @@
 # pylint: disable=wrong-import-position
 
 
-
 """
 **************************************************************
 *                   package initialization.                  *
@@ -96,6 +95,6 @@ from .main import Main
 """
 
 # Defining the public interface of this package
-__all__ = ['common', 'component', 'registry', 'Main']
+__all__ = ["common", "component", "registry", "Main"]
 
 # pylint: enable=wrong-import-position

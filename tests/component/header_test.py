@@ -1,22 +1,23 @@
 import unittest
 from phrenology.component import Header
 
+
 class BaseTestHeaderService(unittest.TestCase):
 
     def setUp(self):
         self.config = {
-            'method': 'GET',
-            'proxy': {
-                'http': 'http://10.10.1.10:3128',
-                'https': 'http://10.10.1.10:1080'
+            "method": "GET",
+            "proxy": {
+                "http": "http://10.10.1.10:3128",
+                "https": "http://10.10.1.10:1080",
             },
-            'params': {'key1': 'value1', 'key2': 'value2'},
-            'headers': {'User-Agent': 'my-app', 'Accept': 'application/json'},
-            'auth': ('user', 'pass'),
-            'timeout': 5,
-            'allow_redirects': False,
-            'verify': True,
-            'cert': '/path/to/certfile'
+            "params": {"key1": "value1", "key2": "value2"},
+            "headers": {"User-Agent": "my-app", "Accept": "application/json"},
+            "auth": ("user", "pass"),
+            "timeout": 5,
+            "allow_redirects": False,
+            "verify": True,
+            "cert": "/path/to/certfile",
         }
         self.service = Header.Service(config=self.config)
         # self.service.url = 'http://example.com'
@@ -29,7 +30,7 @@ class TestMethodProperty(BaseTestHeaderService):
         When I set the method to a valid HTTP method,
         the method property should return the respective method.
         """
-        valid_methods = ['GET', 'HEAD', 'OPTIONS','get', 'head', 'options']
+        valid_methods = ["GET", "HEAD", "OPTIONS", "get", "head", "options"]
         for method in valid_methods:
             with self.subTest(method=method):
                 self.service.method = method
@@ -40,25 +41,30 @@ class TestMethodProperty(BaseTestHeaderService):
         When I set the method to a valid but unsupported HTTP method,
         the method property should return the respective method.
         """
-        valid_methods = ['POST', 'PUT', 'DELETE', 'PATCH', 'TRACE', 'CONNECT']
+        valid_methods = ["POST", "PUT", "DELETE", "PATCH", "TRACE", "CONNECT"]
         for method in valid_methods:
             with self.subTest(method=method):
                 with self.assertRaises(ValueError) as context:
                     self.service.method = method
-                self.assertEqual(str(context.exception),
-                                 "Invalid method input: your method is not currently supported please use GET HEAD or OPTIONS")
+                self.assertEqual(
+                    str(context.exception),
+                    "Invalid method input: your method is not currently supported please use GET HEAD or OPTIONS",
+                )
 
     def test_when_i_set_the_method_to_an_ivalid_http_method(self):
         """
         When I set the method to a invalid HTTP method,
         the method property should return the respective method.
         """
-        invalid_methods = ['bob', '123', 'stuff', 'none']
+        invalid_methods = ["bob", "123", "stuff", "none"]
         for method in invalid_methods:
             with self.subTest(method=method):
                 with self.assertRaises(ValueError) as context:
                     self.service.method = method
-                self.assertEqual(str(context.exception), "Invalid method input: your method is invalid please use GET HEAD or OPTIONS")
+                self.assertEqual(
+                    str(context.exception),
+                    "Invalid method input: your method is invalid please use GET HEAD or OPTIONS",
+                )
 
 
 class TestProxyProperty(BaseTestHeaderService):
@@ -68,7 +74,7 @@ class TestProxyProperty(BaseTestHeaderService):
         When I set a new proxy,
         the proxy property should return the new proxy configuration.
         """
-        new_proxy = {'http': 'http://new.proxy:3128'}
+        new_proxy = {"http": "http://new.proxy:3128"}
         self.service.proxy = new_proxy
         self.assertEqual(self.service.proxy, new_proxy)
 
@@ -80,7 +86,7 @@ class TestParamsProperty(BaseTestHeaderService):
         When I set new params,
         the params property should return the new parameters.
         """
-        new_params = {'new_key': 'new_value'}
+        new_params = {"new_key": "new_value"}
         self.service.params = new_params
         self.assertEqual(self.service.params, new_params)
 
@@ -92,7 +98,7 @@ class TestHeadersProperty(BaseTestHeaderService):
         When I set new headers,
         the headers property should return the new headers.
         """
-        new_headers = {'New-Header': 'HeaderValue'}
+        new_headers = {"New-Header": "HeaderValue"}
         self.service.headers = new_headers
         self.assertEqual(self.service.headers, new_headers)
 
@@ -116,7 +122,7 @@ class TestAuthProperty(BaseTestHeaderService):
         When I set new auth credentials,
         the auth property should return the new credentials.
         """
-        new_auth = ('new_user', 'new_pass')
+        new_auth = ("new_user", "new_pass")
         self.service.auth = new_auth
         self.assertEqual(self.service.auth, new_auth)
 
@@ -168,6 +174,7 @@ class TestAllowRedirectsProperty(BaseTestHeaderService):
 #                 with self.assertRaises(ValueError):
 #                     self.service.verify = value
 
+
 class TestCertProperty(BaseTestHeaderService):
 
     def test_when_i_set_a_new_cert_path(self):
@@ -175,7 +182,7 @@ class TestCertProperty(BaseTestHeaderService):
         When I set a new cert path,
         the cert property should return the new path.
         """
-        new_cert = '/new/path/to/certfile'
+        new_cert = "/new/path/to/certfile"
         self.service.cert = new_cert
         self.assertEqual(self.service.cert, new_cert)
 
@@ -188,18 +195,17 @@ class TestUrlProperty(BaseTestHeaderService):
         When I set an IP URL badly,
         the url property should return the HTTP URL.
         """
-        new_url = 'http://192.168'
+        new_url = "http://192.168"
         with self.assertRaises(ValueError) as context:
             self.service.url = new_url
         self.assertEqual(str(context.exception), "Invalid URL input: dude seriously?")
-
 
     def test_when_i_set_an_ip_url(self):
         """
         When I set an IP URL,
         the url property should return the HTTP URL.
         """
-        new_url = 'http://192.168.1.1'
+        new_url = "http://192.168.1.1"
         self.service.url = new_url
         self.assertEqual(self.service.url, new_url)
 
@@ -208,7 +214,7 @@ class TestUrlProperty(BaseTestHeaderService):
         When I set an IP URL with a port,
         the url property should return the HTTP URL.
         """
-        new_url = 'http://192.168.1.1:23656'
+        new_url = "http://192.168.1.1:23656"
         self.service.url = new_url
         self.assertEqual(self.service.url, new_url)
 
@@ -217,7 +223,7 @@ class TestUrlProperty(BaseTestHeaderService):
         When I set an HTTP URL,
         the url property should return the HTTP URL.
         """
-        new_url = 'http://new-url.com'
+        new_url = "http://new-url.com"
         self.service.url = new_url
         self.assertEqual(self.service.url, new_url)
 
@@ -227,12 +233,12 @@ class TestUrlProperty(BaseTestHeaderService):
         the url property should return the HTTP URL.
         """
         wellformed_urls = [
-            'https://192.com',
-            'https://192.amazon.com',
-            'https://192.168.1.1.com',
-            'https://257.168.1.1.com',
-            'http://192.com?query=param',
-            'https://182.com/124/'
+            "https://192.com",
+            "https://192.amazon.com",
+            "https://192.168.1.1.com",
+            "https://257.168.1.1.com",
+            "http://192.com?query=param",
+            "https://182.com/124/",
         ]
         for new_url in wellformed_urls:
             with self.subTest(new_url=new_url):
@@ -264,7 +270,7 @@ class TestUrlProperty(BaseTestHeaderService):
         When I set an HTTPS URL,
         the url property should return the HTTPS URL.
         """
-        new_url = 'https://secure-url.com'
+        new_url = "https://secure-url.com"
         self.service.url = new_url
         self.assertEqual(self.service.url, new_url)
 
@@ -274,10 +280,13 @@ class TestUrlProperty(BaseTestHeaderService):
         an exception should be thrown with the message:
         "Invalid URL input: FTP protocol does not return headers."
         """
-        new_url = 'ftp://ftp-url.com'
+        new_url = "ftp://ftp-url.com"
         with self.assertRaises(ValueError) as context:
             self.service.url = new_url
-        self.assertEqual(str(context.exception), "Invalid URL input: ftp:// protocol does not return headers.")
+        self.assertEqual(
+            str(context.exception),
+            "Invalid URL input: ftp:// protocol does not return headers.",
+        )
 
     def test_when_i_set_a_mailto_url(self):
         """
@@ -285,10 +294,13 @@ class TestUrlProperty(BaseTestHeaderService):
         an exception should be thrown with the message:
         "Invalid URL input: mailto protocol does not return headers."
         """
-        new_url = 'mailto:someone@example.com'
+        new_url = "mailto:someone@example.com"
         with self.assertRaises(ValueError) as context:
             self.service.url = new_url
-        self.assertEqual(str(context.exception), "Invalid URL input: mailto protocol does not return headers.")
+        self.assertEqual(
+            str(context.exception),
+            "Invalid URL input: mailto protocol does not return headers.",
+        )
 
     def test_when_i_set_a_file_url(self):
         """
@@ -296,17 +308,20 @@ class TestUrlProperty(BaseTestHeaderService):
         an exception should be thrown with the message:
         "Invalid URL input: file protocol does not return headers."
         """
-        new_url = 'file:///path/to/file'
+        new_url = "file:///path/to/file"
         with self.assertRaises(ValueError) as context:
             self.service.url = new_url
-        self.assertEqual(str(context.exception), "Invalid URL input: file:// protocol does not return headers.")
+        self.assertEqual(
+            str(context.exception),
+            "Invalid URL input: file:// protocol does not return headers.",
+        )
 
     def test_when_i_set_a_subdomain_url(self):
         """
         When I set a subdomain URL,
         the url property should return the subdomain URL.
         """
-        new_url = 'http://subdomain.new-url.com'
+        new_url = "http://subdomain.new-url.com"
         self.service.url = new_url
         self.assertEqual(self.service.url, new_url)
 
@@ -315,7 +330,7 @@ class TestUrlProperty(BaseTestHeaderService):
         When I set a URL with a path and query parameters,
         the url property should return the full URL.
         """
-        new_url = 'http://new-url.com/path?query=param'
+        new_url = "http://new-url.com/path?query=param"
         self.service.url = new_url
         self.assertEqual(self.service.url, new_url)
 
@@ -324,18 +339,18 @@ class TestUrlProperty(BaseTestHeaderService):
         When I set a valid FQDN without a protocol,
         the url property should return the URL with https:// prepended.
         """
-        new_url = 'digitalminion.com'
+        new_url = "digitalminion.com"
         self.service.url = new_url
-        self.assertEqual(self.service.url, 'https://digitalminion.com')
+        self.assertEqual(self.service.url, "https://digitalminion.com")
 
     def test_when_i_set_a_fqdn_with_subdomain(self):
         """
         When I set a valid FQDN with subdomain(s) but without a protocol,
         the url property should return the URL with https:// prepended.
         """
-        new_url = 'aws.cloud.digitalminion.com'
+        new_url = "aws.cloud.digitalminion.com"
         self.service.url = new_url
-        self.assertEqual(self.service.url, 'https://aws.cloud.digitalminion.com')
+        self.assertEqual(self.service.url, "https://aws.cloud.digitalminion.com")
 
     def test_when_i_miss_position_a_dot_on_the_fqdn(self):
         """
@@ -344,23 +359,26 @@ class TestUrlProperty(BaseTestHeaderService):
         Invalid URL input: your url is malformed please check it and try again.
         """
         malformed_urls = [
-            'https://.digitalminion.com',
-            'https://digitalminion.com.',
-            'http://new-url.com.?query=param',
-            'https://192.168.1.1.'
+            "https://.digitalminion.com",
+            "https://digitalminion.com.",
+            "http://new-url.com.?query=param",
+            "https://192.168.1.1.",
         ]
         for new_url in malformed_urls:
             with self.subTest(new_url=new_url):
                 with self.assertRaises(ValueError) as context:
                     self.service.url = new_url
-                self.assertEqual(str(context.exception), "Invalid URL input: your url is malformed please check it and try again.")
+                self.assertEqual(
+                    str(context.exception),
+                    "Invalid URL input: your url is malformed please check it and try again.",
+                )
 
         def test_when_i_set_a_url_with_unicode_characters(self):
             """
             When I set a URL with Unicode characters,
             the url property should return the correctly formatted URL.
             """
-            new_url = 'http://example.com/测试'
+            new_url = "http://example.com/测试"
             self.service.url = new_url
             self.assertEqual(self.service.url, new_url)
 
@@ -369,7 +387,7 @@ class TestUrlProperty(BaseTestHeaderService):
             When I set a URL with user info,
             the url property should return the URL with user info preserved.
             """
-            new_url = 'http://user:pass@example.com'
+            new_url = "http://user:pass@example.com"
             self.service.url = new_url
             self.assertEqual(self.service.url, new_url)
 
@@ -378,7 +396,7 @@ class TestUrlProperty(BaseTestHeaderService):
             When I set a URL with a fragment,
             the url property should return the full URL including the fragment.
             """
-            new_url = 'http://example.com/path#section'
+            new_url = "http://example.com/path#section"
             self.service.url = new_url
             self.assertEqual(self.service.url, new_url)
 
@@ -387,7 +405,7 @@ class TestUrlProperty(BaseTestHeaderService):
             When I set a URL with a port and path,
             the url property should return the full URL including the port and path.
             """
-            new_url = 'http://example.com:8080/path'
+            new_url = "http://example.com:8080/path"
             self.service.url = new_url
             self.assertEqual(self.service.url, new_url)
 
@@ -396,9 +414,9 @@ class TestUrlProperty(BaseTestHeaderService):
             When I set a URL with only a path and query,
             the url property should return the full URL with https:// prepended.
             """
-            new_url = 'example.com/path?query=param'
+            new_url = "example.com/path?query=param"
             self.service.url = new_url
-            self.assertEqual(self.service.url, 'https://example.com/path?query=param')
+            self.assertEqual(self.service.url, "https://example.com/path?query=param")
 
         def test_when_i_set_an_ip_url_with_invalid_octet(self):
             """
@@ -406,10 +424,13 @@ class TestUrlProperty(BaseTestHeaderService):
             an exception should be thrown with the message:
             Invalid URL input: dude seriously?
             """
-            new_url = 'http://256.256.256.256'
+            new_url = "http://256.256.256.256"
             with self.assertRaises(ValueError) as context:
                 self.service.url = new_url
-            self.assertEqual(str(context.exception), "Invalid URL input: dude seriously?")
+            self.assertEqual(
+                str(context.exception), "Invalid URL input: dude seriously?"
+            )
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
