@@ -2,6 +2,9 @@
 name = "phrenology" 
 version = "0.1.2"  
 description = "Phrenology is a lightweight extendable and scalable tool for inspecting security headers in responses from webservers.  This project is striving to use as few non-standard installed python libraries as possible while maintaining as much functionality as possible."  
+authors = [
+  { name = "SecurityShrimp", email = "SecurityShrimp@proton.me" },
+]
 
 [project.urls]
 # Add any relevant project URLs (homepage, documentation, etc.)
@@ -10,6 +13,7 @@ Homepage = "https://github.com/f8al/phrenology"
 #[project.license]
 # Specify the license under which your project is distributed (e.g., MIT)
 # license = "MIT"
+
 
 [build-system]
 requires = ["setuptools",
