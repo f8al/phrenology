@@ -1,6 +1,6 @@
-import requests
 import re
-from urllib.parse import urlparse, urlunparse
+import requests
+#from urllib.parse import urlparse, urlunparse
 from requests.exceptions import HTTPError, Timeout, RequestException
 
 
