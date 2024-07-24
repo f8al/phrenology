@@ -26,5 +26,5 @@ jobs:
     - name: Run tests
       run: python -m unittest discover -s tests/component -p '*_test.py'
 
-    # - name: Lint code
-    #   run: pylint $(git ls-files '*.py')
+     - name: Lint code
+       run: pylint $(git ls-files '*.py')
