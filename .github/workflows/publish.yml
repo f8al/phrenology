@@ -19,7 +19,7 @@ jobs:
       - name: Build package
         run: |
           python setup.py sdist bdist_wheel
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@v1.latest  # Update to latest version
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.PYPI_TOKEN }}
