@@ -47,7 +47,6 @@ classifiers = [
 # Dependencies (replace with your required packages)
 dependencies = [
     "requests",
-    "urllib",
     "pylint"
 ]
 

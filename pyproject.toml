@@ -14,7 +14,6 @@ Homepage = "https://github.com/f8al/phrenology"
 [build-system]
 requires = ["setuptools",
     "requests",
-    "urllib",
     "pylint"]
 
 # Optional sections (if applicable)
