@@ -85,28 +85,28 @@ class TestParamsProperty(BaseTestHeaderService):
         self.assertEqual(self.service.params, new_params)
 
 
-# class TestHeadersProperty(BaseTestHeaderService):
+class TestHeadersProperty(BaseTestHeaderService):
 
-#     def test_when_i_set_new_headers(self):
-#         """
-#         When I set new headers,
-#         the headers property should return the new headers.
-#         """
-#         new_headers = {'New-Header': 'HeaderValue'}
-#         self.service.headers = new_headers
-#         self.assertEqual(self.service.headers, new_headers)
+    def test_when_i_set_new_headers(self):
+        """
+        When I set new headers,
+        the headers property should return the new headers.
+        """
+        new_headers = {'New-Header': 'HeaderValue'}
+        self.service.headers = new_headers
+        self.assertEqual(self.service.headers, new_headers)
 
-#     def test_when_i_try_to_set_headers_that_are_not_headers(self):
-#         """
-#         When I try to set headers that are not headers,
-#         the method property should throw the error:
-#         """
-#         invalid_headers = ['bob', '123', {'stuff':'13266', 'a':{'b':'c'}}, 'none']
-#         for headers in invalid_headers:
-#             with self.subTest(headers=headers):
-#                 with self.assertRaises(ValueError) as context:
-#                     self.service.headers = headers
-#                 self.assertEqual(str(context.exception), "Invalid headers input: input provided was malformed")
+    # def test_when_i_try_to_set_headers_that_are_not_headers(self):
+    #     """
+    #     When I try to set headers that are not headers,
+    #     the method property should throw the error:
+    #     """
+    #     invalid_headers = ['bob', '123', {'stuff':'13266', 'a':{'b':'c'}}, 'none']
+    #     for headers in invalid_headers:
+    #         with self.subTest(headers=headers):
+    #             with self.assertRaises(ValueError) as context:
+    #                 self.service.headers = headers
+    #             self.assertEqual(str(context.exception), "Invalid headers input: input provided was malformed")
 
 
 class TestAuthProperty(BaseTestHeaderService):
