@@ -373,63 +373,63 @@ class TestUrlProperty(BaseTestHeaderService):
                     "Invalid URL input: your url is malformed please check it and try again.",
                 )
 
-        def test_when_i_set_a_url_with_unicode_characters(self):
-            """
-            When I set a URL with Unicode characters,
-            the url property should return the correctly formatted URL.
-            """
-            new_url = "http://example.com/测试"
-            self.service.url = new_url
-            self.assertEqual(self.service.url, new_url)
+    def test_when_i_set_a_url_with_unicode_characters(self):
+        """
+        When I set a URL with Unicode characters,
+        the url property should return the correctly formatted URL.
+        """
+        new_url = "http://example.com/测试"
+        self.service.url = new_url
+        self.assertEqual(self.service.url, new_url)
 
-        def test_when_i_set_a_url_with_user_info(self):
-            """
-            When I set a URL with user info,
-            the url property should return the URL with user info preserved.
-            """
-            new_url = "http://user:pass@example.com"
-            self.service.url = new_url
-            self.assertEqual(self.service.url, new_url)
+    def test_when_i_set_a_url_with_user_info(self):
+        """
+        When I set a URL with user info,
+        the url property should return the URL with user info preserved.
+        """
+        new_url = "http://user:pass@example.com"
+        self.service.url = new_url
+        self.assertEqual(self.service.url, new_url)
 
-        def test_when_i_set_a_url_with_fragment(self):
-            """
-            When I set a URL with a fragment,
-            the url property should return the full URL including the fragment.
-            """
-            new_url = "http://example.com/path#section"
-            self.service.url = new_url
-            self.assertEqual(self.service.url, new_url)
+    def test_when_i_set_a_url_with_fragment(self):
+        """
+        When I set a URL with a fragment,
+        the url property should return the full URL including the fragment.
+        """
+        new_url = "http://example.com/path#section"
+        self.service.url = new_url
+        self.assertEqual(self.service.url, new_url)
 
-        def test_when_i_set_a_url_with_port_and_path(self):
-            """
-            When I set a URL with a port and path,
-            the url property should return the full URL including the port and path.
-            """
-            new_url = "http://example.com:8080/path"
-            self.service.url = new_url
-            self.assertEqual(self.service.url, new_url)
+    def test_when_i_set_a_url_with_port_and_path(self):
+        """
+        When I set a URL with a port and path,
+        the url property should return the full URL including the port and path.
+        """
+        new_url = "http://example.com:8080/path"
+        self.service.url = new_url
+        self.assertEqual(self.service.url, new_url)
 
-        def test_when_i_set_a_url_with_only_path_and_query(self):
-            """
-            When I set a URL with only a path and query,
-            the url property should return the full URL with https:// prepended.
-            """
-            new_url = "example.com/path?query=param"
-            self.service.url = new_url
-            self.assertEqual(self.service.url, "https://example.com/path?query=param")
+    def test_when_i_set_a_url_with_only_path_and_query(self):
+        """
+        When I set a URL with only a path and query,
+        the url property should return the full URL with https:// prepended.
+        """
+        new_url = "example.com/path?query=param"
+        self.service.url = new_url
+        self.assertEqual(self.service.url, "https://example.com/path?query=param")
 
-        def test_when_i_set_an_ip_url_with_invalid_octet(self):
-            """
-            When I set an IP URL with an invalid octet,
-            an exception should be thrown with the message:
-            Invalid URL input: dude seriously?
-            """
-            new_url = "http://256.256.256.256"
-            with self.assertRaises(ValueError) as context:
-                self.service.url = new_url
-            self.assertEqual(
-                str(context.exception), "Invalid URL input: dude seriously?"
-            )
+    def test_when_i_set_an_ip_url_with_invalid_octet(self):
+        """
+        When I set an IP URL with an invalid octet,
+        an exception should be thrown with the message:
+        Invalid URL input: dude seriously?
+        """
+        new_url = "http://256.256.256.256"
+        with self.assertRaises(ValueError) as context:
+            self.service.url = new_url
+        self.assertEqual(
+            str(context.exception), "Invalid URL input: dude seriously?"
+        )
 
 
 if __name__ == "__main__":

@@ -1,5 +1,12 @@
 #!/bin/env python3
 from .component.header import HeaderService
+from .registry import owasp_header_dictionary as owasp
+from .registry.headers import (
+    EXPECTED_HEADERS,
+    DEPRECATED_HEADERS,
+    INFORMATION_HEADERS,
+    CACHE_HEADERS,
+)
 
 
 class Main:
@@ -16,7 +23,7 @@ class Main:
         self.output = output
         self.service_config = config
 
-    def engage(self, url, cookie, cache, deprecated, information, get, json):
+    def engage(self, url, cookie, cache, deprecated, information, get, json, owasp_guidance=False):
         """
         Initiates the process of checking headers for a provided URL and generates output based on user preferences.
 
@@ -28,75 +35,46 @@ class Main:
             information (bool, optional): Flag indicating whether to display informational headers in the output. Defaults to False.
             get (bool, optional): Flag indicating whether to use the GET request method instead of HEAD (default). Defaults to False.
             json (bool, optional): Flag indicating whether to output the results in JSON format. Defaults to False.
+            owasp_guidance (bool, optional): Flag indicating whether to display OWASP guidance for each header. Defaults to False.
         """
         session = HeaderService(self.service_config)
+
+        if get:
+            session.method = "GET"
+
+        if cookie:
+            session.headers = {"Cookie": cookie}
+
         session.url = url
         headers_model = session.run_request()
+
+        # Build combined OWASP lookup when guidance is requested
+        owasp_lookup = {}
+        if owasp_guidance:
+            owasp_lookup.update(owasp.expected_security_responses)
+            owasp_lookup.update(owasp.bad_security_headers)
+            owasp_lookup.update(owasp.potentially_interesting_headers)
+
         if headers_model:
-            expected_headers = {
-                "result": ["success", "error"],
-                "items": [
-                    "X-Frame-Options",
-                    "X-Content-Type-Options",
-                    "Strict-Transport-Security",
-                    "Permissions-Policy",
-                    "X-Frame-Options",
-                    "Strict-Transport-Security",
-                    "Content-Security-Policy",
-                    "Cross-Origin-Embedder-Policy",
-                    "Cross-Origin-Resource-Policy",
-                    "Cross-Origin-Opener-Policy",
-                    "Referrer-Policy",
-                ],
-            }
-
-            deprecated_headers = {
-                "result": ["warn", "success"],
-                "items": [
-                    "X-XSS-Protection",
-                    "Expect-CT",
-                    "X-Permitted-Cross-Domain-Policies",
-                ],
-            }
-
-            information_headers = {
-                "result": ["info", "info"],
-                "items": [
-                    "X-Powered-By",
-                    "Server",
-                    "x-AspNet-Version",
-                    "X-AspNetMvc-Version",
-                ],
-            }
-            cache_headers = {
-                "result": ["info", "info"],
-                "items": [
-                    "Cache-Control",
-                    "Pragma",
-                    "Last-Modified",
-                    "Expires",
-                    "ETag",
-                ],
-            }
-
-            self.run("Expected headers", session.url, expected_headers, headers_model)
+            self.run("Expected headers", session.url, EXPECTED_HEADERS, headers_model, owasp_lookup, show_present=True)
             if deprecated:
                 self.run(
-                    "Deprecated headers", session.url, deprecated_headers, headers_model
+                    "Deprecated headers", session.url, DEPRECATED_HEADERS, headers_model, owasp_lookup
                 )
             if information:
                 self.run(
                     "Informational headers",
                     session.url,
-                    information_headers,
+                    INFORMATION_HEADERS,
                     headers_model,
+                    owasp_lookup,
                 )
             if cache:
-                self.run("Cacheing headers", session.url, cache_headers, headers_model)
+                self.run("Cacheing headers", session.url, CACHE_HEADERS, headers_model, owasp_lookup)
         else:
             self._output = {"type": "error", "message": "Failed to retrieve headers."}
 
-    def run(self, name, url, headers, headers_model):
+    def run(self, name, url, headers, headers_model, owasp_lookup=None, show_present=False):
         """
         Processes and outputs header data based on the provided name, headers configuration, and headers model.
 
@@ -106,6 +84,8 @@ class Main:
             name (str): The name of the header category (e.g., "Expected Headers").
             headers (dict): A dictionary containing configuration for the header category (e.g., result type, expected items).
             headers_model (object): An instance of the HeaderService model containing retrieved headers data.
+            owasp_lookup (dict): OWASP guidance lookup, or None/empty if not requested.
+            show_present (bool): Whether to include non-queried headers in the output. Defaults to False.
 
         # Logic for processing and rendering header types block remains unchanged
         """
@@ -124,9 +104,7 @@ class Main:
             {
                 "expected": headers_model.expected,
                 "missing": headers_model.missing,
-                "present": headers_model.present,
+                "present": headers_model.present if show_present else {},
+                "owasp": owasp_lookup or {},
             },
         )
-        # self.output.render_output('read', name, headers["result"], {
-        #    'Content-Type': headers_model.read('Content-Type')
-        # })

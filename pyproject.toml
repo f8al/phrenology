@@ -1,6 +1,6 @@
 [project]
 name = "phrenology" 
-version = "0.1.2"  
+version = "1.0.0"  
 description = "Phrenology is a lightweight extendable and scalable tool for inspecting security headers in responses from webservers.  This project is striving to use as few non-standard installed python libraries as possible while maintaining as much functionality as possible."  
 readme = {file = "README.md", content-type = "text/markdown"}
 authors = [

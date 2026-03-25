@@ -23,14 +23,38 @@ Optional Arguments:
   -h, --help            show this help message and exit
   -u URL, --url URL     URL to check headers
   -C COOKIE, --cookie COOKIE
-                        Custom cookie to send
+                        Custom cookie string to send (e.g. 'session=abc123; token=xyz')
   -c, --cache           Show cache headers
   -d, --deprecated      Show deprecated headers
   -f FILE, --file FILE  path to file containing a list of domains
-  -i, --information     Show informational headers headers
+  -i, --information     Show informational headers
   -g, --get             Use GET request method instead of HEAD
   -j, --json            Output results as a json object
+  -o, --owasp           Show OWASP guidance and recommended values for each header
+  -s, --silent          Suppress the banner (useful when called by another tool)
 ```
+
+## Features
+
+### Header Analysis
+Phrenology checks HTTP responses against four categories of headers:
+
+- **Expected security headers** - Headers that should be present per OWASP guidance (e.g. Content-Security-Policy, Strict-Transport-Security, X-Frame-Options)
+- **Deprecated headers** (`-d`) - Headers that should no longer be used (e.g. X-XSS-Protection, Expect-CT, Feature-Policy)
+- **Informational headers** (`-i`) - Headers that leak server/technology information (e.g. Server, X-Powered-By, X-Generator)
+- **Cache headers** (`-c`) - Cache-related headers (e.g. Cache-Control, Expires, ETag)
+
+### OWASP Guidance (`-o`)
+When the `-o` flag is passed, phrenology displays the OWASP recommended value and guidance for each header alongside the scan results. The OWASP dictionary is based on the [OWASP Secure Headers Project](https://owasp.org/www-project-secure-headers/).
+
+### JSON Output (`-j`)
+Use `-j` to get structured JSON output, useful for piping into other tools or storing results programmatically.
+
+### Silent Mode (`-s`)
+Use `-s` to suppress the ASCII banner, useful when phrenology is called by another tool in a pipeline.
+
+### Bulk Scanning (`-f`)
+Pass a file containing one URL per line to scan multiple domains in a single run.
 
 ## Screenshots
 ![](https://github.com/f8al/media/blob/main/phrenology.png?raw=true)
@@ -48,7 +72,7 @@ In choosing this name for our web security tool, we aim to draw a parallel to th
 "Phrenology" is a tool designed to rigorously check the security headers of websites, ensuring they are robust against common vulnerabilities. It serves as a reminder that while we may laugh at the absurdity of past pseudo-sciences, the real absurdity lies in the modern-day neglect of essential security practices.
 
 ## A Call to Action:
-Let’s take web security seriously. Just as the scientific community moved beyond phrenology to better understand the human mind, we must move beyond superficial security measures to protect our digital assets. Our tool aims to make it easier for engineers to uphold high security standards, ensuring a safer web for everyone.
+Let's take web security seriously. Just as the scientific community moved beyond phrenology to better understand the human mind, we must move beyond superficial security measures to protect our digital assets. Our tool aims to make it easier for engineers to uphold high security standards, ensuring a safer web for everyone.
 
 # Contribution credit
 This tool has been developed with extensive guidance and direction from [@DataMinion](https://github.com/DataMinion)

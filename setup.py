@@ -23,7 +23,7 @@ pip install phrenology
 
 # Replace with your project information
 PROJECT_NAME = "phrenology"
-VERSION = "0.1.2"
+VERSION = "1.0.0"
 DESCRIPTION = "A tool for analyzing your security HEADers"
 AUTHOR = "SecurityShrimp"
 AUTHOR_EMAIL = "securityshrimp@proton.me"

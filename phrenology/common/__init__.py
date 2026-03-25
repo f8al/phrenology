@@ -26,7 +26,7 @@
 
 # Importing classes to include in the Output namespace
 from .output import OutputAbstract
-from .output_template import Template
+from .output_template import Template, JsonTemplate
 
 
 """
@@ -47,6 +47,7 @@ class _Namespace:
 render = _Namespace()
 render.Abstract = OutputAbstract
 render.Template = Template
+render.JsonTemplate = JsonTemplate
 
 """
 **************************************************************
@@ -113,6 +114,6 @@ __all__ = ["output", "render"]
 
 # **************************************************************
 # Clean up the module namespace
-del _Namespace, OutputAbstract, Template
+del _Namespace, OutputAbstract, Template, JsonTemplate
 
 # pylint: enable=wrong-import-position

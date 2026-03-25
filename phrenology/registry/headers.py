@@ -5,19 +5,26 @@ EXPECTED_HEADERS = {
         "X-Content-Type-Options",
         "Strict-Transport-Security",
         "Permissions-Policy",
-        "X-Frame-Options",
-        "Strict-Transport-Security",
         "Content-Security-Policy",
         "Cross-Origin-Embedder-Policy",
         "Cross-Origin-Resource-Policy",
         "Cross-Origin-Opener-Policy",
         "Referrer-Policy",
+        "X-Permitted-Cross-Domain-Policies",
+        "X-DNS-Prefetch-Control",
+        "Clear-Site-Data",
     ],
 }
 
-DEPRICATED_HEADERS = {
+DEPRECATED_HEADERS = {
     "result": ["warn", "success"],
-    "items": ["X-XSS-Protection", "Expect-CT", "X-Permitted-Cross-Domain-Policies"],
+    "items": [
+        "X-XSS-Protection",
+        "Expect-CT",
+        "Public-Key-Pins",
+        "Feature-Policy",
+        "Pragma",
+    ],
 }
 
 INFORMATION_HEADERS = {
@@ -25,11 +32,18 @@ INFORMATION_HEADERS = {
     "items": [
         "X-Powered-By",
         "Server",
-        "x-AspNet-Version",
+        "X-AspNet-Version",
         "X-AspNetMvc-Version",
-        "CF-RAY",
+        "X-Php-Version",
+        "Powered-By",
+        "X-CF-Powered-By",
+        "X-Generator",
+        "X-Redirect-By",
+        "SourceMap",
+        "X-SourceMap",
     ],
 }
+
 CACHE_HEADERS = {
     "result": ["info", "info"],
     "items": ["Cache-Control", "Pragma", "Last-Modified", "Expires", "ETag"],

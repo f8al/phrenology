@@ -1,8 +1,11 @@
 import re
 import requests
+import urllib3
 
 # from urllib.parse import urlparse, urlunparse
 from requests.exceptions import HTTPError, Timeout, RequestException
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class HeaderModel:

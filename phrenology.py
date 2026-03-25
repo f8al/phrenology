@@ -4,7 +4,7 @@ from phrenology import Main
 from phrenology.common import render
 
 
-def main(output):
+def main():
     parser = argparse.ArgumentParser(description="Phrenology CLI")
     parser.add_argument(
         "-u", "--url", dest="url", type=str, help="URL to check headers", required=False
@@ -14,7 +14,7 @@ def main(output):
         "--cookie",
         dest="cookie",
         type=str,
-        help="Custom cookie to send",
+        help="Custom cookie string to send (e.g. 'session=abc123; token=xyz')",
         required=False,
     )
     parser.add_argument(
@@ -30,7 +30,7 @@ def main(output):
         "--deprecated",
         dest="deprecated",
         action="store_true",
-        help="Show informational headers",
+        help="Show deprecated headers",
         required=False,
     )
     parser.add_argument(
@@ -46,7 +46,7 @@ def main(output):
         "--information",
         dest="information",
         action="store_true",
-        help="Show informational headers headers",
+        help="Show informational headers",
         required=False,
     )
     parser.add_argument(
@@ -65,9 +65,32 @@ def main(output):
         help="Output results as a json object",
         required=False,
     )
+    parser.add_argument(
+        "-o",
+        "--owasp",
+        dest="owasp",
+        action="store_true",
+        help="Show OWASP guidance and recommended values for each header",
+        required=False,
+    )
+    parser.add_argument(
+        "-s",
+        "--silent",
+        dest="silent",
+        action="store_true",
+        help="Suppress the banner (useful when called by another tool)",
+        required=False,
+    )
 
     args = parser.parse_args()
-    output.render_output("banner")
+
+    if args.json:
+        output = render.JsonTemplate()
+    else:
+        output = render.Template()
+
+    if not args.silent:
+        output.render_output("banner")
     main_obj = Main(
         output, {"method": "HEAD", "allow_redirects": False, "verify": False}
     )
@@ -84,6 +107,7 @@ def main(output):
                 args.information,
                 args.get,
                 args.json,
+                args.owasp,
             )
     elif args.url:
         main_obj.engage(
@@ -94,13 +118,15 @@ def main(output):
             args.information,
             args.get,
             args.json,
+            args.owasp,
         )
     else:
         # Handle error: No URL or file provided
         print("Error: Either -u/--url or -f/--file argument is required.")
 
+    if args.json:
+        output.dump()
 
-# main_obj.engage(args.url, args.cookie, args.cache, args.deprecated, args.information, args.get, args.json)
 
 if __name__ == "__main__":
-    main(render.Template())
+    main()

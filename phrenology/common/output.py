@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 class OutputAbstract(ABC):
     @abstractmethod
-    def render_output(self, output_type, data=None):
+    def render_output(self, output_type, name=None, url=None, result=None, data=None):
         pass
 
     @abstractmethod

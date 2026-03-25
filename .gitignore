@@ -74,4 +74,4 @@ venv.bak/
 shc*
 *.py.bak
 *.list
-
+.vscode/

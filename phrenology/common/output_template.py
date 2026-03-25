@@ -1,3 +1,5 @@
+import json
+
 from .output import OutputAbstract
 
 """
@@ -78,7 +80,7 @@ class Template(OutputAbstract):
         print("           SecurityShrimp/DataMinion 2024                 ")
         print("\n\n")
 
-    def render_output(self, output_type, url=None, name=None, result=None, data=None):
+    def render_output(self, output_type, name=None, url=None, result=None, data=None):
         """
         Renders the output based on its type.
 
@@ -124,15 +126,35 @@ class Template(OutputAbstract):
         colorbang = colorize("!", "error")
         colorsplat = colorize("*", "info")
 
+        found_alert = result[0] if result else "success"
+        missing_alert = result[1] if result and len(result) > 1 else "error"
+        owasp = data.get("owasp", {})
+
+        if missing_alert != "error" and not data["expected"]:
+            print(f"[{colorsplat}] No {colorize(name.lower(), 'success')} found on {colorize(domain, 'info')}")
+            return
+
         print(f"[*] Analyzing {colorize(name, 'info')} of {colorize(domain, 'info')}")
-        # for key, value in data["expected"].items():
-        #    print(f'[{colorsplat}] Security headers expected for analysis: {key}')
+
+        for key, value in data["expected"].items():
+            print(
+                f"[{colorize('!', found_alert) if found_alert == 'warn' else colorsplat}] Header {colorize(key, found_alert)} is present! (Value: {colorize(value, 'info')})"
+            )
+            if key in owasp:
+                entry = owasp[key]
+                print(f"    OWASP Recommended: {colorize(entry['recommended'], 'info')}")
+                print(f"    Guidance: {entry['guidance']}")
+        if missing_alert == "error":
+            for key, value in data["missing"].items():
+                print(f"[{colorbang}] Missing security header: {colorize(key, 'error')}")
+                if key in owasp:
+                    entry = owasp[key]
+                    print(f"    OWASP Recommended: {colorize(entry['recommended'], 'info')}")
+                    print(f"    Guidance: {entry['guidance']}")
         for key, value in data["present"].items():
             print(
-                f"[{colorsplat}] Header {colorize(key, 'success')} is present! (Value: {colorize(value, 'info')})"
+                f"[{colorsplat}] {colorize(key, 'info')}: {value}"
             )
-        for key, value in data["missing"].items():
-            print(f"[{colorbang}] Missing security header: {colorize(key, 'error')}")
 
     def _render_read(self, name, url, result, data):
         """
@@ -156,3 +178,63 @@ class Template(OutputAbstract):
         print("\n************************************")
         print(f"**          {name}: Error Occurred        **\n\n")
         print(f"\t{data['message']}")
+
+
+class JsonTemplate(OutputAbstract):
+    """
+    Collects header analysis results and outputs them as JSON.
+    """
+
+    def __init__(self):
+        self.results = {}
+
+    def render_output(self, output_type, name=None, url=None, result=None, data=None):
+        method_name = f"_render_{output_type}"
+        method = getattr(self, method_name, None)
+        if callable(method):
+            method(name, url, result, data)
+        else:
+            raise AttributeError(f"No render method found for type '{output_type}'")
+
+    def _render_banner(self, name=None, url=None, result=None, data=None):
+        pass
+
+    def _render_counts(self, name, url, result, data):
+        if url not in self.results:
+            self.results[url] = {}
+        if name not in self.results[url]:
+            self.results[url][name] = {}
+        missing_alert = result[1] if result and len(result) > 1 else "error"
+        counts = {"expected": data["expected"]}
+        if missing_alert == "error":
+            counts["missing"] = data["missing"]
+        self.results[url][name]["counts"] = counts
+
+    def _render_list(self, name, url, result, data):
+        if url not in self.results:
+            self.results[url] = {}
+        if name not in self.results[url]:
+            self.results[url][name] = {}
+        missing_alert = result[1] if result and len(result) > 1 else "error"
+        present = data.get("present", {})
+        if present:
+            self.results[url][name]["present"] = present
+        if missing_alert == "error":
+            self.results[url][name]["missing"] = list(data.get("missing", {}).keys())
+        self.results[url][name]["expected"] = data.get("expected", {})
+
+    def _render_read(self, name, url, result, data):
+        if url not in self.results:
+            self.results[url] = {}
+        if name not in self.results[url]:
+            self.results[url][name] = {}
+        self.results[url][name]["details"] = data
+
+    def _render_error(self, name, url, result, data):
+        if url not in self.results:
+            self.results[url] = {}
+        self.results[url]["error"] = data.get("message", str(data))
+
+    def dump(self):
+        """Prints the collected results as JSON."""
+        print(json.dumps(self.results, indent=2))
