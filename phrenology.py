@@ -1,5 +1,6 @@
 #!/bin/env python3
 import argparse
+import sys
 from phrenology import Main
 from phrenology.common import render
 
@@ -95,12 +96,10 @@ def main():
         output, {"method": "HEAD", "allow_redirects": False, "verify": False}
     )
 
-    if args.file:
-        with open(args.file, "r") as f:
-            urls = f.read().splitlines()
-        for url in urls:
+    def _engage(target_url):
+        try:
             main_obj.engage(
-                url,
+                target_url,
                 args.cookie,
                 args.cache,
                 args.deprecated,
@@ -109,17 +108,16 @@ def main():
                 args.json,
                 args.owasp,
             )
+        except (ValueError, RuntimeError) as e:
+            print(f"Error: {e}", file=sys.stderr)
+
+    if args.file:
+        with open(args.file, "r") as f:
+            urls = f.read().splitlines()
+        for url in urls:
+            _engage(url)
     elif args.url:
-        main_obj.engage(
-            args.url,
-            args.cookie,
-            args.cache,
-            args.deprecated,
-            args.information,
-            args.get,
-            args.json,
-            args.owasp,
-        )
+        _engage(args.url)
     else:
         # Handle error: No URL or file provided
         print("Error: Either -u/--url or -f/--file argument is required.")

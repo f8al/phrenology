@@ -1,8 +1,10 @@
 import re
+import socket
+from urllib.parse import urlparse
+
 import requests
 import urllib3
 
-# from urllib.parse import urlparse, urlunparse
 from requests.exceptions import HTTPError, Timeout, RequestException
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -619,6 +621,18 @@ class HeaderService:
         Raises:
             RuntimeError: If an error occurs during the request.
         """
+        hostname = urlparse(self.url).hostname
+        if not hostname:
+            raise RuntimeError(
+                f"Could not determine hostname from URL '{self.url}'. Check for typos and try again."
+            )
+        try:
+            socket.gethostbyname(hostname)
+        except socket.gaierror:
+            raise RuntimeError(
+                f"Could not resolve '{hostname}'. Check the URL for typos and confirm the domain exists."
+            )
+
         config = self.config
         try:
             response = self.session.request(self.method, self.url, **config)

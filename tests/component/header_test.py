@@ -1,4 +1,7 @@
+import socket
 import unittest
+from unittest.mock import patch
+
 from phrenology.component import Header
 
 
@@ -430,6 +433,23 @@ class TestUrlProperty(BaseTestHeaderService):
         self.assertEqual(
             str(context.exception), "Invalid URL input: dude seriously?"
         )
+
+
+class TestRunRequestResolvesHostname(BaseTestHeaderService):
+    """Tests for the DNS pre-flight check in run_request."""
+
+    def test_when_hostname_does_not_resolve(self):
+        """
+        When the URL's hostname cannot be resolved,
+        run_request should raise RuntimeError with a friendly message
+        naming the hostname and suggesting the user check for typos.
+        """
+        self.service.url = "https://this-domain-does-not-exist.invalid"
+        with patch("socket.gethostbyname", side_effect=socket.gaierror):
+            with self.assertRaises(RuntimeError) as context:
+                self.service.run_request()
+        self.assertIn("this-domain-does-not-exist.invalid", str(context.exception))
+        self.assertIn("typos", str(context.exception))
 
 
 if __name__ == "__main__":
