@@ -35,6 +35,14 @@ def main():
         required=False,
     )
     parser.add_argument(
+        "-D",
+        "--disable-ssl-verify",
+        dest="disable_ssl_verify",
+        action="store_true",
+        help="Disable SSL certificate verification",
+        required=False,
+    )
+    parser.add_argument(
         "-f",
         "--file",
         dest="file",
@@ -93,7 +101,12 @@ def main():
     if not args.silent:
         output.render_output("banner")
     main_obj = Main(
-        output, {"method": "HEAD", "allow_redirects": False, "verify": False}
+        output,
+        {
+            "method": "HEAD",
+            "allow_redirects": False,
+            "verify": not args.disable_ssl_verify,
+        },
     )
 
     def _engage(target_url):

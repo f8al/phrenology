@@ -435,6 +435,18 @@ class TestUrlProperty(BaseTestHeaderService):
         )
 
 
+class TestVerifyProperty(BaseTestHeaderService):
+
+    def test_verify_defaults_to_true_from_base_config(self):
+        """The base test config sets verify=True; the service should reflect it."""
+        self.assertTrue(self.service.verify)
+
+    def test_verify_can_be_disabled(self):
+        """Setting verify=False should be reflected in the service config."""
+        self.service.verify = False
+        self.assertFalse(self.service.verify)
+
+
 class TestRunRequestResolvesHostname(BaseTestHeaderService):
     """Tests for the DNS pre-flight check in run_request."""
 
