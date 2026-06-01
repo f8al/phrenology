@@ -1,7 +1,7 @@
 certifi==2026.2.25
 charset-normalizer==3.4.7
 idna==3.17
-requests==2.33.1
+requests==2.34.2
 pylint
 build
 zipp>=3.19.1
