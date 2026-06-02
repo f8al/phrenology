@@ -4,4 +4,4 @@ idna==3.17
 requests==2.33.1
 pylint
 build
-zipp>=3.19.1
+zipp>=4.1.0
